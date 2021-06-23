@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Box, Input, Select } from "@chakra-ui/react";
 
 import { IUser } from "../index";
@@ -13,7 +14,7 @@ interface ISearchPanelProps {
 	users: IUser[];
 }
 
-const SearchPanel = (props: ISearchPanelProps) => {
+const SearchPanel: FC<ISearchPanelProps> = props => {
 	const { param, setParam, users } = props;
 
 	const { name, personId } = param;

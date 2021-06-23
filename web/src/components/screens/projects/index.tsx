@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { Box } from "@chakra-ui/react";
 
@@ -21,7 +21,7 @@ export interface IProject {
 	created: string;
 }
 
-const ProjectsScreen = () => {
+const ProjectsScreen: FC = () => {
 	const [param, setParam] = useState({
 		name: "",
 		personId: "",

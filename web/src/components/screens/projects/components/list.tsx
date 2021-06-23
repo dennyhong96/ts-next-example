@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 
 import { IProject, IUser } from "../index";
@@ -7,7 +8,7 @@ interface IListProps {
 	users: IUser[];
 }
 
-const List = (props: IListProps) => {
+const List: FC<IListProps> = props => {
 	const { list, users } = props;
 
 	return (
