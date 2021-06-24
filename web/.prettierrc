@@ -1,6 +1,6 @@
 {
 	"endOfLine": "lf",
-	"arrowParens": "avoid",
+	"arrowParens": "always",
 	"bracketSpacing": true,
 	"htmlWhitespaceSensitivity": "css",
 	"insertPragma": false,
@@ -13,5 +13,5 @@
 	"singleQuote": false,
 	"tabWidth": 2,
 	"trailingComma": "all",
-	"useTabs": true
+	"useTabs": false
 }

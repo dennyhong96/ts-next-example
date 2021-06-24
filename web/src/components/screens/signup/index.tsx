@@ -1,13 +1,13 @@
 import React, { useRef, FormEvent, useEffect } from "react";
 import NextLink from "next/link";
-import { Input, Stack, Box, Text, Button, useToast, Link } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { Input, Stack, Box, Text, Button, useToast, Link } from "@chakra-ui/react";
 
 import { useAuth } from "@contexts/auth";
 
-const LoginScreen = () => {
+const SignupScreen = () => {
   const toast = useToast();
-  const { user, login } = useAuth();
+  const { user, signup } = useAuth();
 
   const router = useRouter();
 
@@ -33,19 +33,18 @@ const LoginScreen = () => {
     }
 
     try {
-      await login({ email, password });
+      await signup({ email, password });
+      console.log({ user });
       emailRef.current && (emailRef.current.value = "");
       passwordRef.current && (passwordRef.current.value = "");
     } catch (error) {
       console.error(error);
-      if (error.code === "auth/user-not-found") {
-        toast({
-          title: "Unabled to login.",
-          description: "User not found, please sign up.",
-          status: "error",
-          isClosable: true,
-        });
-      }
+      toast({
+        title: "Unabled to Signup.",
+        description: error.message,
+        status: "error",
+        isClosable: true,
+      });
     }
   };
 
@@ -79,11 +78,11 @@ const LoginScreen = () => {
               <Input ref={passwordRef} type="password" placeholder="Password" id="password" />
             </Box>
             <Button colorScheme="teal" type="submit">
-              Login
+              Signup
             </Button>
-            <NextLink href="/auth/signup" passHref>
+            <NextLink href="/auth/login" passHref>
               <Link color="teal.500" size="sm">
-                Don&apos;t have an account? Signup.
+                Have an account? Login.
               </Link>
             </NextLink>
           </Stack>
@@ -93,4 +92,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
