@@ -1,5 +1,5 @@
-import { Fragment } from "react";
+import LoginScreen from "@components/screens/login";
 
 export default function Home() {
-	return <Fragment></Fragment>;
+	return <LoginScreen />;
 }
