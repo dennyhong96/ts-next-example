@@ -20,8 +20,19 @@ export const AuthContext = createContext<
   | undefined
 >(undefined);
 
+const bootstrapUser = () => {
+  if (typeof window === "undefined") return;
+  const localUserResult: string | null = localStorage.getItem("usr");
+  if (localUserResult && typeof localUserResult === "string") {
+    const localUser = JSON.parse(localUserResult as string);
+    return localUser;
+  } else {
+    localStorage.removeItem("usr");
+  }
+};
+
 export const AuthProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser | null>(bootstrapUser() ?? null);
 
   console.log({ user });
 
@@ -29,14 +40,18 @@ export const AuthProvider: FC = ({ children }) => {
     auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
         // User is signed in
-        setUser({
+        const userToStore = {
           id: firebaseUser.uid,
           name: firebaseUser.displayName ?? "",
           email: firebaseUser.email ?? "",
-        });
+        };
+
+        setUser(userToStore);
+        localStorage.setItem("usr", JSON.stringify(userToStore));
       } else {
         // User is signed out
         setUser(null);
+        localStorage.removeItem("usr");
       }
     });
   }, []);

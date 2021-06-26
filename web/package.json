@@ -1,87 +1,88 @@
 {
-	"name": "2021",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
-		"start": "next start",
-		"next:lint": "next lint",
-		"lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
-		"format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
-		"format:check": "prettier --check \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
-		"svg": "svgr -d src/components/icons src/components/icons/svgs"
-	},
-	"dependencies": {
-		"@chakra-ui/react": "^1.6.4",
-		"@emotion/react": "^11.4.0",
-		"@emotion/styled": "^11.3.0",
-		"body-scroll-lock": "^3.1.5",
-		"dayzed": "^3.2.2",
-		"email-validator": "^2.0.4",
-		"firebase": "^8.6.8",
-		"framer-motion": "^4.1.17",
-		"js-cookie": "^2.2.1",
-		"keen-slider": "^5.4.1",
-		"next": "11.0.0",
-		"npm": "^7.18.1",
-		"qs": "^6.10.1",
-		"react": "17.0.2",
-		"react-dom": "17.0.2",
-		"react-query": "^3.17.2"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.14.3",
-		"@firebase/firestore-types": "^2.3.0",
-		"@svgr/cli": "^3.1.0",
-		"@testing-library/jest-dom": "^5.11.9",
-		"@testing-library/react": "^11.2.5",
-		"@types/node": "^15.12.4",
-		"@types/qs": "^6.9.6",
-		"@types/react": "^17.0.11",
-		"@typescript-eslint/eslint-plugin": "^4.28.0",
-		"@typescript-eslint/parser": "^4.28.0",
-		"babel-jest": "^26.6.3",
-		"babel-loader": "^8.2.2",
-		"babel-plugin-macros": "^3.0.1",
-		"eslint": "^7.20.0",
-		"eslint-config-airbnb": "^18.2.1",
-		"eslint-import-resolver-typescript": "^2.4.0",
-		"eslint-plugin-import": "^2.23.4",
-		"eslint-plugin-jsx-a11y": "^6.4.1",
-		"eslint-plugin-react": "^7.24.0",
-		"eslint-plugin-react-hooks": "^4.2.0",
-		"husky": "^4.3.8",
-		"jest": "^26.6.3",
-		"lint-staged": "^10.5.4",
-		"prettier": "^2.2.1",
-		"typescript": "^4.3.4"
-	},
-	"lint-staged": {
-		"**/*.{json,mdx,css,scss,md}": [
-			"prettier --write"
-		],
-		"**/*.{js,jsx,ts,tsx}": [
-			"eslint --fix"
-		],
-		"*.{ts,tsx,js,jsx}": "eslint --cache --fix"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"license": "MIT",
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+  "name": "2021",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "next:lint": "next lint",
+    "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
+    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
+    "svg": "svgr -d src/components/icons src/components/icons/svgs"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.6.4",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "axios": "^0.21.1",
+    "body-scroll-lock": "^3.1.5",
+    "dayzed": "^3.2.2",
+    "email-validator": "^2.0.4",
+    "firebase": "^8.6.8",
+    "framer-motion": "^4.1.17",
+    "js-cookie": "^2.2.1",
+    "keen-slider": "^5.4.1",
+    "next": "11.0.0",
+    "npm": "^7.18.1",
+    "qs": "^6.10.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-query": "^3.17.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@firebase/firestore-types": "^2.3.0",
+    "@svgr/cli": "^3.1.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@types/node": "^15.12.4",
+    "@types/qs": "^6.9.6",
+    "@types/react": "^17.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-macros": "^3.0.1",
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "typescript": "^4.3.4"
+  },
+  "lint-staged": {
+    "**/*.{json,mdx,css,scss,md}": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{ts,tsx,js,jsx}": "eslint --cache --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "license": "MIT",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
