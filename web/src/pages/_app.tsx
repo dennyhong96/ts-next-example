@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   const queryClient = new QueryClient();
 
   // https://www.tomasgildev.com/posts/next-persistent-layout-typescript
-  const Layout = Component.Layout ?? ((children) => <>{children}</>);
+  const Layout = Component.Layout ?? (({ children }) => children);
 
   return (
     <AuthProvider>

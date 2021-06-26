@@ -21,6 +21,7 @@
       "@lib/*": ["./src/lib/*"],
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
+      "@localTypes/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"]
     }
   },

@@ -1,28 +1,20 @@
 import { useEffect, FC } from "react";
 import { useRouter } from "next/router";
-import NextLink from "next/link";
-import { Stack, Button } from "@chakra-ui/react";
 
-import Layout from "@components/layout";
+import PageWithLayoutType from "@localTypes/pageWithLayout";
 import { useAuth } from "@contexts/auth";
-import PageWithLayoutType from "src/types/pageWithLayout";
+import Layout from "@components/layout";
+import ProjectsScreen from "@components/screens/projects";
 
 const Home: FC = () => {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!user) router.push("/auth/login");
   }, [user, router]);
 
-  return (
-    <Stack direction="row">
-      <NextLink href="/projects">
-        <Button colorScheme="teal">Go to projects</Button>
-      </NextLink>
-      <Button onClick={logout}>Signout</Button>
-    </Stack>
-  );
+  return <ProjectsScreen />;
 };
 
 (Home as PageWithLayoutType).Layout = Layout;
