@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { Box, Button } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Stack, Button } from "@chakra-ui/react";
 
 import { useAuth } from "@contexts/auth";
 import { useEffect } from "react";
@@ -13,8 +14,11 @@ export default function Home() {
   }, [user, router]);
 
   return (
-    <Box>
+    <Stack direction="row">
+      <NextLink href="/projects">
+        <Button colorScheme="teal">Go to projects</Button>
+      </NextLink>
       <Button onClick={logout}>Signout</Button>
-    </Box>
+    </Stack>
   );
 }

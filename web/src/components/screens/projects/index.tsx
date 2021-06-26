@@ -81,7 +81,7 @@ const ProjectsScreen: FC = () => {
       <Box
         css={`
           width: 100%;
-          max-width: 500px;
+          max-width: 720px;
         `}
       >
         <SearchPanel param={param} setParam={setParam} users={users} />

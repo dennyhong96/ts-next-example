@@ -25,6 +25,7 @@ const bootstrapUser = () => {
   const localUserResult: string | null = localStorage.getItem("usr");
   if (localUserResult && typeof localUserResult === "string") {
     const localUser = JSON.parse(localUserResult as string);
+    // TODO: validate user via admin api?
     return localUser;
   } else {
     localStorage.removeItem("usr");
@@ -33,8 +34,6 @@ const bootstrapUser = () => {
 
 export const AuthProvider: FC = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(bootstrapUser() ?? null);
-
-  console.log({ user });
 
   useEffect(() => {
     auth.onAuthStateChanged((firebaseUser) => {

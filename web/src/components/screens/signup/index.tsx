@@ -1,7 +1,18 @@
 import React, { useRef, FormEvent, useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Input, Stack, Box, Text, Button, useToast, Link } from "@chakra-ui/react";
+import {
+  Input,
+  Stack,
+  Box,
+  Button,
+  useToast,
+  Link,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  Heading,
+} from "@chakra-ui/react";
 
 import { useAuth } from "@contexts/auth";
 
@@ -34,7 +45,6 @@ const SignupScreen = () => {
 
     try {
       await signup({ email, password });
-      console.log({ user });
       emailRef.current && (emailRef.current.value = "");
       passwordRef.current && (passwordRef.current.value = "");
     } catch (error) {
@@ -60,26 +70,31 @@ const SignupScreen = () => {
       <Box
         css={`
           width: 100%;
-          max-width: 350px;
+          max-width: 400px;
+          box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+          padding: 2rem;
         `}
       >
         <form onSubmit={handleSubmit}>
           <Stack>
-            <Box>
-              <Text as="label" htmlFor="email" fontSize="sm">
-                Username
-              </Text>
-              <Input ref={emailRef} type="email" placeholder="Username" id="email" />
-            </Box>
-            <Box>
-              <Text as="label" htmlFor="password" fontSize="sm">
-                Password
-              </Text>
+            <Heading size="xl">Signup</Heading>
+
+            <FormControl id="email" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input ref={emailRef} type="email" placeholder="Email" id="email" />
+              <FormHelperText>We&apos;ll never share your email.</FormHelperText>
+            </FormControl>
+
+            <FormControl id="password" isRequired>
+              <FormLabel>Password</FormLabel>
               <Input ref={passwordRef} type="password" placeholder="Password" id="password" />
-            </Box>
+            </FormControl>
+
             <Button colorScheme="teal" type="submit">
               Signup
             </Button>
+
             <NextLink href="/auth/login" passHref>
               <Link color="teal.500" size="sm">
                 Have an account? Login.
