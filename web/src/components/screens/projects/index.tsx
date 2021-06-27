@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 import { db } from "@lib/firebase";
 import useMount from "@hooks/useMount";
@@ -70,23 +70,10 @@ const ProjectsScreen: FC = () => {
   }, [debouncedParam]);
 
   return (
-    <Box
-      css={`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem;
-      `}
-    >
-      <Box
-        css={`
-          width: 100%;
-          max-width: 720px;
-        `}
-      >
-        <SearchPanel param={param} setParam={setParam} users={users} />
-        <List list={list} users={users} />
-      </Box>
+    <Box padding={4}>
+      <Heading mb={4}>Projects List</Heading>
+      <SearchPanel param={param} setParam={setParam} users={users} />
+      <List list={list} users={users} />
     </Box>
   );
 };

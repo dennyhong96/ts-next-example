@@ -20,14 +20,14 @@ const SearchPanel: FC<ISearchPanelProps> = (props) => {
   const { name, personId } = param;
 
   return (
-    <Stack as="form" direction="row">
-      <Input value={name} onChange={(evt) => setParam({ ...param, name: evt.target.value })} />
+    <Stack as="form" direction="row" marginBottom={4}>
+      <Input
+        value={name}
+        onChange={(evt) => setParam({ ...param, name: evt.target.value })}
+        width={500}
+      />
 
-      <Box
-        css={`
-          width: 200px;
-        `}
-      >
+      <Box width={200}>
         <Select
           value={personId}
           onChange={(evt) => setParam({ ...param, personId: evt.target.value })}
