@@ -1,10 +1,12 @@
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
-// TODO: type
-export const cleanObject = (object: Record<string, unknown>) => {
+export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
+
+// type { [key: string]: unknown } indicates we want key-value pairs
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
   Object.keys(object).forEach((key) => {
     const value = object[key];
-    if (!isFalsy(value)) delete result[key];
+    if (isVoid(value)) delete result[key];
   });
 };

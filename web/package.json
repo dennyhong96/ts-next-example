@@ -10,14 +10,16 @@
     "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
     "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,json,ts,tsx,mdx,css,scss,md}\"",
-    "svg": "svgr -d src/components/icons src/components/icons/svgs"
+    "svg": "svgr -d src/components/icons src/components/icons/svgs --ext tsx"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "axios": "^0.21.1",
     "body-scroll-lock": "^3.1.5",
+    "dayjs": "^1.10.5",
     "dayzed": "^3.2.2",
     "email-validator": "^2.0.4",
     "firebase": "^8.6.8",
@@ -29,7 +31,8 @@
     "qs": "^6.10.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-query": "^3.17.2"
+    "react-query": "^3.17.2",
+    "react-spinners": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
