@@ -1,11 +1,10 @@
 import React, { useState, FC } from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
 
-import { db } from "@lib/firebase";
-import useMount from "@hooks/useMount";
 import SearchPanel from "./components/search-panel";
 import List from "./components/list";
 import useProjects from "@hooks/useProjects";
+import useUsers from "@hooks/useUsers";
 
 export interface IUser {
   id: string;
@@ -27,23 +26,17 @@ const ProjectsScreen: FC = () => {
     personId: "",
   });
 
-  const [users, setUsers] = useState<IUser[]>([]);
+  const { users } = useUsers();
   const { projects, isLoading, error } = useProjects(param);
 
-  useMount(async () => {
-    const snapshots = await db.collection("users").get();
-    const items: IUser[] = [];
-    snapshots.forEach((doc) => {
-      items.push({ id: doc.id, ...(doc.data() as { name: string; email: string }) });
-    });
-    setUsers(items);
-  });
+  console.log({ projects });
+  console.log({ users });
 
   return (
     <Box padding={4}>
       <Heading mb={4}>Projects List</Heading>
 
-      <SearchPanel param={param} setParam={setParam} users={users} />
+      <SearchPanel param={param} setParam={setParam} users={users ?? []} />
 
       {error ? (
         <Text color="red" fontSize="md">
@@ -51,7 +44,7 @@ const ProjectsScreen: FC = () => {
         </Text>
       ) : null}
 
-      <List list={projects ?? []} users={users} isLoading={isLoading} />
+      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} />
     </Box>
   );
 };
