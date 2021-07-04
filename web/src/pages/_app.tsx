@@ -6,6 +6,8 @@ import PageWithLayoutType from "src/types/pageWithLayout";
 
 import { AuthProvider } from "@contexts/auth";
 import theme from "@styles/theme";
+import { ErrorBoundary } from "@components/errorBoundary";
+import FullPageErrorFallback from "@components/fullPageErrorFallback";
 // import { addData } from "addData";
 
 type AppLayoutProps = {
@@ -23,15 +25,16 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
 
   return (
     <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <ErrorBoundary fallbackRender={FullPageErrorFallback}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </ChakraProvider>
   );
 }
