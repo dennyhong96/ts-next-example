@@ -1,13 +1,13 @@
-import React, { createContext, useContext, FC } from "react";
+import React, { createContext, useContext, FC, useEffect } from "react";
+import { useRouter } from "next/router";
+import { UserCredential } from "@firebase/auth-types";
 
 import { auth } from "@lib/firebase";
-import { IUser } from "@components/screens/projects";
-import { useEffect } from "react";
-import { UserCredential } from "@firebase/auth-types";
 import useAsync from "@hooks/useAsync";
-import FullPageLoading from "@components/fullPageLoading";
 import useMount from "@hooks/useMount";
-import { useRouter } from "next/router";
+import { IUser } from "@components/screens/projects";
+import FullPageLoading from "@components/fullPageLoading";
+import FullPageErrorFallback from "@components/fullPageErrorFallback";
 
 interface IAuthForm {
   email: string;
@@ -85,6 +85,8 @@ export const AuthProvider: FC = ({ children }) => {
   }, [isIdle, isLoading, user]);
 
   if (isIdle || isLoading) return <FullPageLoading />;
+
+  if (isError) return <FullPageErrorFallback error={error} />;
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>{children}</AuthContext.Provider>
