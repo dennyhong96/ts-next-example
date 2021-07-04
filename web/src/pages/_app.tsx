@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
 
   // https://www.tomasgildev.com/posts/next-persistent-layout-typescript
   const Layout = Component.Layout ?? (({ children }) => children);
+  const SubLayout = Component.SubLayout ?? (({ children }) => children);
 
   return (
     <ChakraProvider theme={theme}>
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <Layout>
-              <Component {...pageProps} />
+              <SubLayout>
+                <Component {...pageProps} />
+              </SubLayout>
             </Layout>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>

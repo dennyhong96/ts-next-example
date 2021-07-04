@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import PageWithLayoutType from "@localTypes/pageWithLayout";
 import Layout from "@components/layout";
+import ProjectLayout from "@components/projectLayout";
 import ProjectEpicScreen from "@components/screens/project/epic";
 
 const ProjectEpicPage: FC = () => {
@@ -9,5 +10,6 @@ const ProjectEpicPage: FC = () => {
 };
 
 (ProjectEpicPage as PageWithLayoutType).Layout = Layout;
+(ProjectEpicPage as PageWithLayoutType).SubLayout = ProjectLayout;
 
 export default ProjectEpicPage;
