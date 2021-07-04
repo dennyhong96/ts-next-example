@@ -1,18 +1,23 @@
-import { FC } from "react";
+import { FC, Fragment, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import PageWithLayoutType from "@localTypes/pageWithLayout";
 import Layout from "@components/layout";
-import ProjectsScreen from "@components/screens/projects";
-import { Fragment } from "react";
+import FullPageLoading from "@components/fullPageLoading";
 
 const Home: FC = () => {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/projects");
+  }, []);
+
   return (
     <Fragment>
       <Head>
-        <title>Project Management</title>
+        <title>Loading...</title>
       </Head>
-      <ProjectsScreen />
+      <FullPageLoading />
     </Fragment>
   );
 };

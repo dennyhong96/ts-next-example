@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Box } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Table, Thead, Tbody, Tr, Th, Td, Box, Link } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
@@ -34,7 +35,11 @@ const List: FC<IListProps> = (props) => {
         <Tbody>
           {list.map((project: IProject, idx) => (
             <Tr key={`${project.name}-${idx}`}>
-              <Td>{project.name}</Td>
+              <Td>
+                <NextLink href={`/projects/${project.id}/kanban`} passHref>
+                  <Link color="teal">{project.name}</Link>
+                </NextLink>
+              </Td>
               <Td>{project.organization}</Td>
               <Td>
                 {users.find((u: IUser) => u.id === project.personId)?.name ?? "No user assigned"}
