@@ -15,12 +15,13 @@ import {
 import { useRouter } from "next/router";
 
 import { useAuth } from "@contexts/auth";
+import useAsync from "@hooks/useAsync";
 
 const LoginScreen = () => {
+  const router = useRouter();
   const toast = useToast();
   const { user, login } = useAuth();
-
-  const router = useRouter();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
   useEffect(() => {
     if (user) router.push("/");
@@ -32,7 +33,7 @@ const LoginScreen = () => {
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const email = emailRef.current?.value;
-    const password = emailRef.current?.value;
+    const password = passwordRef.current?.value;
 
     if (!email || !password) {
       return toast({
@@ -44,19 +45,15 @@ const LoginScreen = () => {
     }
 
     try {
-      await login({ email, password });
-      emailRef.current && (emailRef.current.value = "");
-      passwordRef.current && (passwordRef.current.value = "");
-    } catch (error) {
-      console.error(error);
-      if (error.code === "auth/user-not-found") {
-        toast({
-          title: "Unabled to login.",
-          description: "User not found, please sign up.",
-          status: "error",
-          isClosable: true,
-        });
-      }
+      await run(login({ email, password }));
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Unabled to Login.",
+        description: err.message,
+        status: "error",
+        isClosable: true,
+      });
     }
   };
 
@@ -92,7 +89,7 @@ const LoginScreen = () => {
               <FormLabel>Password</FormLabel>
               <Input ref={passwordRef} type="password" placeholder="Password" id="password" />
             </FormControl>
-            <Button colorScheme="teal" type="submit">
+            <Button isLoading={isLoading} colorScheme="teal" type="submit">
               Login
             </Button>
             <NextLink href="/auth/signup" passHref>

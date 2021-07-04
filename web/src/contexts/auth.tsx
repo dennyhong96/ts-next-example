@@ -1,9 +1,13 @@
 import React, { createContext, useContext, FC } from "react";
-import { useState } from "react";
+
 import { auth } from "@lib/firebase";
 import { IUser } from "@components/screens/projects";
 import { useEffect } from "react";
 import { UserCredential } from "@firebase/auth-types";
+import useAsync from "@hooks/useAsync";
+import FullPageLoading from "@components/fullPageLoading";
+import useMount from "@hooks/useMount";
+import { useRouter } from "next/router";
 
 interface IAuthForm {
   email: string;
@@ -20,7 +24,7 @@ export const AuthContext = createContext<
   | undefined
 >(undefined);
 
-const bootstrapUser = () => {
+const bootstrapUser = async () => {
   if (typeof window === "undefined") return;
   const localUserResult: string | null = localStorage.getItem("usr");
   if (localUserResult && typeof localUserResult === "string") {
@@ -29,13 +33,26 @@ const bootstrapUser = () => {
     return localUser;
   } else {
     localStorage.removeItem("usr");
+    return null;
   }
 };
 
 export const AuthProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<IUser | null>(bootstrapUser() ?? null);
+  const {
+    data: user,
+    setData: setUser,
+    run,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = useAsync<IUser | null>();
 
-  useEffect(() => {
+  const router = useRouter();
+
+  useMount(() => {
+    run(bootstrapUser());
+
     auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
         // User is signed in
@@ -53,7 +70,7 @@ export const AuthProvider: FC = ({ children }) => {
         localStorage.removeItem("usr");
       }
     });
-  }, []);
+  });
 
   const login = (form: IAuthForm) => auth.signInWithEmailAndPassword(form.email, form.password);
 
@@ -61,6 +78,13 @@ export const AuthProvider: FC = ({ children }) => {
     auth.createUserWithEmailAndPassword(form.email, form.password);
 
   const logout = () => auth.signOut();
+
+  useEffect(() => {
+    if (!isIdle && !isLoading && !user) router.replace("/auth/login");
+    // eslint-disable-next-line
+  }, [isIdle, isLoading, user]);
+
+  if (isIdle || isLoading) return <FullPageLoading />;
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>{children}</AuthContext.Provider>

@@ -22,16 +22,17 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   const Layout = Component.Layout ?? (({ children }) => children);
 
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </ChakraProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </AuthProvider>
+
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </AuthProvider>
+    </ChakraProvider>
   );
 }
 export default MyApp;

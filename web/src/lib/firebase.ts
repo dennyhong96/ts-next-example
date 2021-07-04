@@ -19,9 +19,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 
   // For debug only
-  if (process.env.NODE_ENV === "development" && process.browser && !window.firebase) {
-    window.firebase = firebase;
-  }
+  // if (process.env.NODE_ENV === "development" && process.browser && !window.firebase) {
+  //   window.firebase = firebase;
+  // }
 }
 
 export const db = firebase.firestore();

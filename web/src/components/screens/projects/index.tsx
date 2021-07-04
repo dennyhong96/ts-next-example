@@ -29,8 +29,8 @@ const ProjectsScreen: FC = () => {
   const { users } = useUsers();
   const { projects, isLoading, error } = useProjects(param);
 
-  console.log({ projects });
-  console.log({ users });
+  // console.log({ projects });
+  // console.log({ users });
 
   return (
     <Box padding={4}>
