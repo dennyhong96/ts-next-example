@@ -1,9 +1,17 @@
-import useDocumentTitle from "@hooks/useDocumentTitle";
+import { Fragment } from "react";
+import Head from "next/head";
+
 import LoginScreen from "@components/screens/login";
 
 const Login = () => {
-  useDocumentTitle("Please login");
-  return <LoginScreen />;
+  return (
+    <Fragment>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <LoginScreen />
+    </Fragment>
+  );
 };
 
 export default Login;

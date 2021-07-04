@@ -1,9 +1,17 @@
-import useDocumentTitle from "@hooks/useDocumentTitle";
+import Head from "next/head";
+import { Fragment } from "react";
+
 import SignupScreen from "@components/screens/signup";
 
 const Signup = () => {
-  useDocumentTitle("Please signup");
-  return <SignupScreen />;
+  return (
+    <Fragment>
+      <Head>
+        <title>Signup</title>
+      </Head>
+      <SignupScreen />
+    </Fragment>
+  );
 };
 
 export default Signup;
