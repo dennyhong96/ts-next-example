@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import {
   Flex,
   Button,
@@ -7,9 +8,10 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Link,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import SvgClipboardCheck from "@components/icons/ClipboardCheck";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import { useAuth } from "@contexts/auth";
 
@@ -26,7 +28,12 @@ const Header = () => {
       boxShadow="0 0 5px 0 rgba(0, 0, 0, 0.1)"
     >
       <Stack direction="row" alignItems="center">
-        <SvgClipboardCheck style={{ height: "3rem" }} />
+        <NextLink href="/" passHref>
+          <Link>
+            <SvgClipboardCheck style={{ height: "3rem" }} />
+          </Link>
+        </NextLink>
+
         <Heading size="sm">Projects</Heading>
         <Heading size="sm">Users</Heading>
       </Stack>
