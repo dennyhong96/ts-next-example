@@ -29,15 +29,15 @@ const ProjectsScreen: FC = () => {
   const { users } = useUsers();
   const { projects, isLoading, error } = useProjects(debouncedParam);
 
-  console.log({ param });
-  console.log({ projects });
-  console.log({ users });
+  // console.log({ param });
+  // console.log({ projects });
+  // console.log({ users });
 
   return (
     <Box padding={4}>
       <Heading mb={4}>Projects List</Heading>
 
-      <SearchPanel param={param} setParam={setParam} users={users ?? []} />
+      <SearchPanel param={param} setParam={setParam} />
 
       {error ? (
         <Text color="red" fontSize="md">

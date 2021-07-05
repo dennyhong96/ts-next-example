@@ -1,7 +1,9 @@
 import { FC } from "react";
-import { Stack, Input, Select, Box } from "@chakra-ui/react";
+import { Stack, Input, Box, IconButton } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 
-import { IUser } from "../index";
+import UserSelect from "@components/userSelect";
+import { IProject } from "../index";
 
 interface IParam {
   name: string;
@@ -9,36 +11,45 @@ interface IParam {
 }
 
 interface ISearchPanelProps {
-  param: IParam;
+  param: Pick<IProject, "name" | "personId">;
   setParam: (newParam: IParam) => void;
-  users: IUser[];
 }
 
 const SearchPanel: FC<ISearchPanelProps> = (props) => {
-  const { param, setParam, users } = props;
+  const { param, setParam } = props;
 
   const { name, personId } = param;
 
   return (
     <Stack as="form" direction="row" marginBottom={4}>
-      <Input
-        value={name}
-        onChange={(evt) => setParam({ ...param, name: evt.target.value })}
-        width={500}
-      />
+      <Box position="relative">
+        <Input
+          value={name}
+          onChange={(evt) => setParam({ ...param, name: evt.target.value })}
+          width={500}
+        />
+        <IconButton
+          onClick={() => setParam({ ...param, name: "" })}
+          position="absolute"
+          size="xs"
+          borderRadius={4}
+          right={2}
+          color="gray.400"
+          css={`
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+          `}
+          aria-label="Clear"
+          icon={<CloseIcon />}
+        />
+      </Box>
 
       <Box width={200}>
-        <Select
-          value={personId}
-          onChange={(evt) => setParam({ ...param, personId: evt.target.value })}
-        >
-          <option value="">Select Person</option>
-          {users.map((u: IUser) => (
-            <option key={u.id} value={u.id}>
-              {u.name}
-            </option>
-          ))}
-        </Select>
+        <UserSelect
+          personId={personId}
+          onChange={(newPersonId) => setParam({ ...param, personId: newPersonId })}
+        />
       </Box>
     </Stack>
   );
