@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import queryString from "query-string";
 
-type TQueryObj = { [key in string]: string | string[] };
-
-const useURLQueryParams = (keys: string[]) => {
+const useURLQueryParams = <K extends string>(keys: K[]) => {
   const filterQueryParams = () => {
     const queryParamsObj = queryString.parseUrl(window.location.href).query;
-    return keys.reduce((acc, k) => ({ ...acc, [k]: queryParamsObj[k] ?? "" }), {} as TQueryObj);
+    return keys.reduce(
+      (acc, key) => ({ ...acc, [key]: queryParamsObj[key] ?? "" }),
+      {} as { [key in K]: string },
+    );
   };
 
   const [queryObj, setQueryObj] = useState(
@@ -15,10 +16,7 @@ const useURLQueryParams = (keys: string[]) => {
   );
 
   useEffect(() => {
-    function handlePopState() {
-      const newQueryParamsObj = filterQueryParams();
-      setQueryObj(newQueryParamsObj);
-    }
+    const handlePopState = () => setQueryObj(filterQueryParams());
     window.addEventListener("popstate", handlePopState);
     return () => {
       window.removeEventListener("popstate", handlePopState);
@@ -26,7 +24,7 @@ const useURLQueryParams = (keys: string[]) => {
     // eslint-disable-next-line
   }, []);
 
-  const setQuery = (newQuery: TQueryObj) => {
+  const setQuery = <T>(newQuery: T) => {
     const newQueryObj = { ...queryObj, ...newQuery };
     setQueryObj(newQueryObj);
     const newhref = queryString.stringifyUrl({
@@ -36,7 +34,9 @@ const useURLQueryParams = (keys: string[]) => {
     history.pushState({}, "", newhref);
   };
 
-  return [queryObj, setQuery] as const;
+  return [queryObj, setQuery] as const; // `as cont` solves `tuple` return type issue
 };
 
 export default useURLQueryParams;
+
+// const a = ["jack", 12, { gender: "male" }] as const;

@@ -1,3 +1,4 @@
+import "@utils/wdyr";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -8,14 +9,14 @@ import { AuthProvider } from "@contexts/auth";
 import theme from "@styles/theme";
 import { ErrorBoundary } from "@components/errorBoundary";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
+
 // import { addData } from "addData";
+// addData();
 
 type AppLayoutProps = {
   Component: PageWithLayoutType;
   pageProps: any;
 };
-
-// addData();
 
 function MyApp({ Component, pageProps }: AppLayoutProps) {
   const queryClient = new QueryClient();

@@ -17,6 +17,7 @@
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@welldone-software/why-did-you-render": "^6.2.0",
     "axios": "^0.21.1",
     "body-scroll-lock": "^3.1.5",
     "dayjs": "^1.10.5",

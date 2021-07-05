@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
 
-import SearchPanel from "./components/search-panel";
-import List from "./components/list";
+import useURLQueryParams from "@hooks/useURLQueryParams";
 import useProjects from "@hooks/useProjects";
 import useUsers from "@hooks/useUsers";
-import useURLQueryParams from "@hooks/useURLQueryParams";
+import List from "./components/list";
+import SearchPanel from "./components/search-panel";
+import useDebounce from "@hooks/useDebounce";
 
 export interface IUser {
   id: string;
@@ -23,9 +24,10 @@ export interface IProject {
 
 const ProjectsScreen: FC = () => {
   const [param, setParam] = useURLQueryParams(["name", "personId"]);
+  const debouncedParam = useDebounce(param, 200);
 
   const { users } = useUsers();
-  const { projects, isLoading, error } = useProjects(param);
+  const { projects, isLoading, error } = useProjects(debouncedParam);
 
   console.log({ param });
   console.log({ projects });
