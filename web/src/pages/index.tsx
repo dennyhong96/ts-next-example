@@ -7,9 +7,9 @@ import Layout from "@components/layout";
 import FullPageLoading from "@components/fullPageLoading";
 
 const Home: FC = () => {
-  const router = useRouter();
+  const { replace } = useRouter();
   useEffect(() => {
-    router.replace("/projects");
+    replace("/projects");
   }, []);
 
   return (

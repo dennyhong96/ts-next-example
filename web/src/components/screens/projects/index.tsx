@@ -1,10 +1,11 @@
-import React, { useState, FC } from "react";
+import React, { FC } from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
 
 import SearchPanel from "./components/search-panel";
 import List from "./components/list";
 import useProjects from "@hooks/useProjects";
 import useUsers from "@hooks/useUsers";
+import useURLQueryParams from "@hooks/useURLQueryParams";
 
 export interface IUser {
   id: string;
@@ -21,16 +22,14 @@ export interface IProject {
 }
 
 const ProjectsScreen: FC = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param, setParam] = useURLQueryParams(["name", "personId"]);
 
   const { users } = useUsers();
   const { projects, isLoading, error } = useProjects(param);
 
-  // console.log({ projects });
-  // console.log({ users });
+  console.log({ param });
+  console.log({ projects });
+  console.log({ users });
 
   return (
     <Box padding={4}>
