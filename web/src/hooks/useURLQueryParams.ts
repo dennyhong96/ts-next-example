@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import queryString from "query-string";
+import { cleanObject } from "@utils/cleanObject";
 
 const useURLQueryParams = <K extends string>(keys: K[]) => {
   const filterQueryParams = () => {
@@ -22,11 +23,13 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
       window.removeEventListener("popstate", handlePopState);
     };
     // eslint-disable-next-line
-  }, []);
+  }, []); // primitive types and react states can be put into deps, objects can NOT be put into deps.
 
-  const setQuery = <T>(newQuery: T) => {
-    const newQueryObj = { ...queryObj, ...newQuery };
+  const setQuery = (newQuery: Partial<{ [key in K]: string }>) => {
+    const newQueryObj = cleanObject({ ...queryObj, ...newQuery }) as { [key in K]: string }; // TODO: type
+
     setQueryObj(newQueryObj);
+
     const newhref = queryString.stringifyUrl({
       url: `${window.location.origin}${window.location.pathname}`,
       query: newQueryObj,
