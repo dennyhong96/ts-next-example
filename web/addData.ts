@@ -1,69 +1,37 @@
+import faker from "faker";
+
 import { db } from "@lib/firebase";
-import { IProject, IUser } from "@components/screens/projects";
-
-const projects: Omit<IProject, "id">[] = [
-  {
-    name: "proj1",
-    organization: "org1",
-    personId: "p1",
-    created: new Date().toISOString(),
-  },
-  {
-    name: "proj2",
-    organization: "org2",
-    personId: "p2",
-    created: new Date().toISOString(),
-  },
-  {
-    name: "proj3",
-    organization: "org3",
-    personId: "p3",
-    created: new Date().toISOString(),
-  },
-  {
-    name: "proj4",
-    organization: "org4",
-    personId: "p4",
-    created: new Date().toISOString(),
-  },
-  {
-    name: "proj5",
-    organization: "org5",
-    personId: "p5",
-    created: new Date().toISOString(),
-  },
-];
-
-const users: IUser[] = [
-  {
-    id: "p1",
-    name: "Denny Hong",
-    email: "test@test.com",
-  },
-  {
-    id: "p2",
-    name: "Sharon Zhang",
-    email: "test1@test.com",
-  },
-  {
-    id: "p3",
-    name: "Joseph Hong",
-    email: "test3@test.com",
-  },
-  {
-    id: "p4",
-    name: "Rita Li",
-    email: "test4@test.com",
-  },
-];
 
 export const addData = async () => {
-  await Promise.all(projects.map((p) => db.collection("projects").add(p)));
+  const userIds = Array.from({ length: 15 }, () => db.collection("users").doc().id);
 
+  // Add users
   await Promise.all(
-    users.map(async (u) => {
-      const { id, ...rest } = u;
-      await db.collection("users").doc(id).set(rest);
-    }),
+    userIds.map(
+      async (id) =>
+        await db.collection("users").doc(id).set({
+          email: faker.internet.email(),
+          name: faker.name.findName(),
+        }),
+    ),
+  );
+
+  // Add projects
+  await Promise.all(
+    userIds.map(
+      async (uid) =>
+        await Promise.all(
+          Array.from(
+            { length: 2 },
+            async () =>
+              await db.collection("projects").add({
+                personId: uid,
+                name: faker.lorem.word(),
+                organization: faker.name.jobType(),
+                created: Date.now(),
+              }),
+          ),
+        ),
+    ),
   );
 };

@@ -2,7 +2,7 @@ import React, { createContext, useContext, FC, useEffect } from "react";
 import { useRouter } from "next/router";
 import { UserCredential } from "@firebase/auth-types";
 
-import { auth } from "@lib/firebase";
+import { auth, db } from "@lib/firebase";
 import useAsync from "@hooks/useAsync";
 import useMount from "@hooks/useMount";
 import { IUser } from "@components/screens/projects";
@@ -64,6 +64,13 @@ export const AuthProvider: FC = ({ children }) => {
 
         setUser(userToStore);
         localStorage.setItem("usr", JSON.stringify(userToStore));
+
+        db.collection("users")
+          .doc(userToStore.id)
+          .set({
+            email: userToStore.email,
+            name: firebaseUser.displayName ?? userToStore.email.split("@").filter(Boolean)[0],
+          });
       } else {
         // User is signed out
         setUser(null);

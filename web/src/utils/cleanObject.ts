@@ -9,5 +9,5 @@ export const cleanObject = (object: { [key: string]: unknown }) => {
     const value = object[key];
     if (isVoid(value)) delete result[key];
   });
-  return object;
+  return result;
 };
