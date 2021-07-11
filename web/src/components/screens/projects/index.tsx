@@ -20,6 +20,7 @@ export interface IProject {
   organization: string;
   personId: string;
   created: string;
+  pin?: boolean;
 }
 
 const ProjectsScreen: FC = () => {

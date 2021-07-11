@@ -48,7 +48,7 @@ export const AuthProvider: FC = ({ children }) => {
     error,
   } = useAsync<IUser | null>();
 
-  // const { replace } = useRouter();
+  const { replace } = useRouter();
 
   useMount(() => {
     run(bootstrapUser());
@@ -86,10 +86,10 @@ export const AuthProvider: FC = ({ children }) => {
 
   const logout = () => auth.signOut();
 
-  // useEffect(() => {
-  //   if (!isIdle && !isLoading && !user) replace("/auth/login");
-  //   // eslint-disable-next-line
-  // }, [isIdle, isLoading, user]);
+  useEffect(() => {
+    if (!isIdle && !isLoading && !user) replace("/auth/login");
+    // eslint-disable-next-line
+  }, [isIdle, isLoading, user]);
 
   if (isIdle || isLoading) return <FullPageLoading />;
 

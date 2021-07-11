@@ -24,7 +24,7 @@ const SearchPanel: FC<ISearchPanelProps> = (props) => {
     <Stack as="form" direction="row" marginBottom={4}>
       <Box position="relative">
         <Input
-          value={name}
+          value={name ?? ""}
           onChange={(evt) => setParam({ ...param, name: evt.target.value })}
           width={500}
         />

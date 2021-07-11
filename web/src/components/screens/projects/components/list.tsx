@@ -5,7 +5,9 @@ import dayjs from "dayjs";
 import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
 
+import Star from "@components/star";
 import { IProject, IUser } from "../index";
+import useEditProject from "@hooks/useEditProject";
 
 interface IListProps {
   list: IProject[];
@@ -15,6 +17,9 @@ interface IListProps {
 
 const List: FC<IListProps> = (props) => {
   const { list, users, isLoading } = props;
+  const { mutate } = useEditProject();
+
+  const handleEditProject = (id: string) => (pin: boolean) => mutate({ id, pin });
 
   // TODO: use React Table with sorting
   return (
@@ -26,6 +31,7 @@ const List: FC<IListProps> = (props) => {
       >
         <Thead>
           <Tr>
+            <Th>Favorite</Th>
             <Th>Name</Th>
             <Th>Orgnization</Th>
             <Th>Person</Th>
@@ -35,6 +41,9 @@ const List: FC<IListProps> = (props) => {
         <Tbody>
           {list.map((project: IProject, idx) => (
             <Tr key={`${project.name}-${idx}`}>
+              <Td>
+                <Star onClick={handleEditProject(project.id)} pinned={!!project.pin} />
+              </Td>
               <Td>
                 <NextLink href={`/projects/${project.id}/kanban`} passHref>
                   <Link color="teal">{project.name}</Link>
