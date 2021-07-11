@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useMountedRef from "@hooks/useMountedRef";
 
 interface State<D> {
@@ -28,50 +28,59 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
 
   const isMountedRef = useMountedRef();
 
-  const setData = (data: D) =>
-    setState({
-      data,
-      stat: "success",
-      error: null,
-    });
+  const setData = useCallback(
+    (data: D) =>
+      setState({
+        data,
+        stat: "success",
+        error: null,
+      }),
+    [],
+  );
 
-  const setError = (error: Error) =>
-    setState({
-      error,
-      data: null,
-      stat: "error",
-    });
+  const setError = useCallback(
+    (error: Error) =>
+      setState({
+        error,
+        data: null,
+        stat: "error",
+      }),
+    [],
+  );
 
   // run async request
-  const run = (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
-    if (!promise || !promise.then) {
-      throw new Error("Please pass in a promise");
-    }
-
-    setRetry(() => () => {
-      if (runConfig?.retry) {
-        run(runConfig.retry(), runConfig);
+  const run = useCallback(
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("Please pass in a promise");
       }
-    }); // Lazy Update
 
-    setState({ ...state, stat: "loading" });
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig.retry(), runConfig);
+        }
+      }); // Lazy Update
 
-    return promise
-      .then((data) => {
-        // Prevent memory leak
-        if (isMountedRef.current) {
-          setData(data);
-        }
-        return data;
-      })
-      .catch((err) => {
-        setError(err);
-        if (initialConfig?.throwOnError) {
-          return Promise.reject(err);
-        }
-        return err;
-      });
-  };
+      setState((prev) => ({ ...prev, stat: "loading" })); // Prevent useing 'state', causing infinite re-render
+
+      return promise
+        .then((data) => {
+          // Prevent memory leak
+          if (isMountedRef.current) {
+            setData(data);
+          }
+          return data;
+        })
+        .catch((err) => {
+          setError(err);
+          if (initialConfig?.throwOnError) {
+            return Promise.reject(err);
+          }
+          return err;
+        });
+    },
+    [setData, setError, initialConfig?.throwOnError, isMountedRef],
+  );
 
   return {
     isIdle: state.stat === "idle",

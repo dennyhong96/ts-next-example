@@ -30,6 +30,8 @@ const ProjectsScreen: FC = () => {
   const { users } = useUsers();
   const { projects, isLoading, error, retry } = useProjects(debouncedParam);
 
+  console.log({ projects });
+
   // console.log({ param });
   // console.log({ projects });
   // console.log({ users });
