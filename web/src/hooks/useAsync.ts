@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useMountedRef from "@hooks/useMountedRef";
 
 interface State<D> {
   error: Error | null;
@@ -24,6 +25,8 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
 
   // eslint-disable-next-line
   const [retry, setRetry] = useState(() => () => {}); // Lazy Init
+
+  const isMountedRef = useMountedRef();
 
   const setData = (data: D) =>
     setState({
@@ -55,7 +58,10 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
 
     return promise
       .then((data) => {
-        setData(data);
+        // Prevent memory leak
+        if (isMountedRef.current) {
+          setData(data);
+        }
         return data;
       })
       .catch((err) => {

@@ -34,8 +34,6 @@ const ProjectsScreen: FC = () => {
   // console.log({ projects });
   // console.log({ users });
 
-  console.log({ projects });
-
   return (
     <Box padding={4}>
       <Heading mb={4}>Projects List</Heading>
