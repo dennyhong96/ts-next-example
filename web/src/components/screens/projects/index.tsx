@@ -28,11 +28,13 @@ const ProjectsScreen: FC = () => {
   const debouncedParam = useDebounce(param, 200);
 
   const { users } = useUsers();
-  const { projects, isLoading, error } = useProjects(debouncedParam);
+  const { projects, isLoading, error, retry } = useProjects(debouncedParam);
 
   // console.log({ param });
   // console.log({ projects });
   // console.log({ users });
+
+  console.log({ projects });
 
   return (
     <Box padding={4}>
@@ -46,7 +48,7 @@ const ProjectsScreen: FC = () => {
         </Text>
       ) : null}
 
-      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} />
+      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} refresh={retry} />
     </Box>
   );
 };

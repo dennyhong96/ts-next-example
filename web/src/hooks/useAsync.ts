@@ -22,6 +22,9 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
     ...initialState,
   });
 
+  // eslint-disable-next-line
+  const [retry, setRetry] = useState(() => () => {}); // Lazy Init
+
   const setData = (data: D) =>
     setState({
       data,
@@ -37,10 +40,16 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
     });
 
   // run async request
-  const run = (promise: Promise<D>) => {
+  const run = (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
     if (!promise || !promise.then) {
       throw new Error("Please pass in a promise");
     }
+
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig.retry(), runConfig);
+      }
+    }); // Lazy Update
 
     setState({ ...state, stat: "loading" });
 
@@ -64,6 +73,7 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
     isError: state.stat === "error",
     isSuccess: state.stat === "success",
     run,
+    retry,
     setData,
     setError,
     ...state,

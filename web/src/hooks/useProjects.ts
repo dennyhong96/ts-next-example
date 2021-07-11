@@ -6,36 +6,36 @@ import useAsync from "@hooks/useAsync";
 import { IProject } from "@components/screens/projects";
 
 const useProjects = (param: Partial<IProject>) => {
-  const { data: projects, isLoading, error, run } = useAsync<IProject[]>();
+  const { data: projects, isLoading, error, run, retry } = useAsync<IProject[]>();
 
   useEffect(() => {
-    run(
-      (async () => {
-        type projectRefType = CollectionReference<DocumentData> | Query<DocumentData>;
+    async function listProjects() {
+      type projectRefType = CollectionReference<DocumentData> | Query<DocumentData>;
 
-        const items: IProject[] = [];
+      const items: IProject[] = [];
 
-        let projectsRef: projectRefType = db.collection("projects");
+      let projectsRef: projectRefType = db.collection("projects");
 
-        if (param.personId) {
-          projectsRef = projectsRef.where("personId", "==", param.personId);
-        }
+      if (param.personId) {
+        projectsRef = projectsRef.where("personId", "==", param.personId);
+      }
 
-        if (param.name) {
-          projectsRef = projectsRef.where("name", "==", param.name);
-        }
+      if (param.name) {
+        projectsRef = projectsRef.where("name", "==", param.name);
+      }
 
-        const snapshots = await projectsRef.get();
+      const snapshots = await projectsRef.get();
 
-        snapshots.forEach((doc) => {
-          const data = doc.data();
-          const created = data.created;
-          items.push({ ...(data as Omit<IProject, "id" | "created">), id: doc.id, created });
-        });
+      snapshots.forEach((doc) => {
+        const data = doc.data();
+        const created = data.created;
+        items.push({ ...(data as Omit<IProject, "id" | "created">), id: doc.id, created });
+      });
 
-        return items;
-      })(),
-    );
+      return items;
+    }
+
+    run(listProjects(), { retry: listProjects });
 
     // eslint-disable-next-line
   }, [param]);
@@ -44,6 +44,7 @@ const useProjects = (param: Partial<IProject>) => {
     projects,
     isLoading,
     error,
+    retry,
   };
 };
 

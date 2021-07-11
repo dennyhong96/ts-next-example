@@ -13,13 +13,17 @@ interface IListProps {
   list: IProject[];
   users: IUser[];
   isLoading: boolean;
+  refresh: () => void;
 }
 
 const List: FC<IListProps> = (props) => {
-  const { list, users, isLoading } = props;
+  const { list, users, isLoading, refresh } = props;
   const { mutate } = useEditProject();
 
-  const handleEditProject = (id: string) => (pin: boolean) => mutate({ id, pin });
+  const handleEditProject = (id: string) => async (pin: boolean) => {
+    await mutate({ id, pin });
+    refresh();
+  };
 
   // TODO: use React Table with sorting
   return (
