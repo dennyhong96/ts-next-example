@@ -5,7 +5,7 @@ import { CollectionReference, DocumentData, Query } from "@firebase/firestore-ty
 import useAsync from "@hooks/useAsync";
 import { IProject } from "@components/screens/projects";
 
-const useProjects = (param: Partial<IProject>) => {
+const useProjects = (param?: Partial<IProject>) => {
   const { data: projects, isLoading, error, run, retry } = useAsync<IProject[]>();
 
   const listProjects = useCallback(async () => {
@@ -15,11 +15,11 @@ const useProjects = (param: Partial<IProject>) => {
 
     let projectsRef: projectRefType = db.collection("projects");
 
-    if (param.personId) {
+    if (param?.personId) {
       projectsRef = projectsRef.where("personId", "==", param.personId);
     }
 
-    if (param.name) {
+    if (param?.name) {
       projectsRef = projectsRef.where("name", "==", param.name);
     }
 
@@ -32,7 +32,7 @@ const useProjects = (param: Partial<IProject>) => {
     });
 
     return items;
-  }, [param.name, param.personId]);
+  }, [param]);
 
   useEffect(() => {
     run(listProjects(), { retry: listProjects });

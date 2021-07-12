@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import React, { ReactNode } from "react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 import useURLQueryParams from "@hooks/useURLQueryParams";
 import useProjects from "@hooks/useProjects";
@@ -23,7 +23,7 @@ export interface IProject {
   pin?: boolean;
 }
 
-const ProjectsScreen: FC = () => {
+const ProjectsScreen = ({ projectButton }: { projectButton: ReactNode }) => {
   const [param, setParam] = useURLQueryParams(["name", "personId"]);
   const debouncedParam = useDebounce(param, 200);
 
@@ -38,7 +38,10 @@ const ProjectsScreen: FC = () => {
 
   return (
     <Box padding={4}>
-      <Heading mb={4}>Projects List</Heading>
+      <Flex justifyContent="space-between">
+        <Heading mb={4}>Projects List</Heading>
+        {projectButton}
+      </Flex>
 
       <SearchPanel param={param} setParam={setParam} />
 
@@ -48,7 +51,13 @@ const ProjectsScreen: FC = () => {
         </Text>
       ) : null}
 
-      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} refresh={retry} />
+      <List
+        list={projects ?? []}
+        users={users ?? []}
+        isLoading={isLoading}
+        refresh={retry}
+        projectButton={projectButton}
+      />
     </Box>
   );
 };

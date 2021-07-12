@@ -1,13 +1,13 @@
 import { useAuth } from "@contexts/auth";
-import { FC, Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 
 import Header from "./header";
 
-const Layout: FC = ({ children }) => {
+const Layout = ({ children, projectButton }: { children: ReactNode; projectButton: ReactNode }) => {
   const { user } = useAuth();
   return user ? (
     <Fragment>
-      <Header />
+      <Header projectButton={projectButton} />
       {children}
     </Fragment>
   ) : null;

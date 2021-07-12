@@ -9,14 +9,42 @@ import {
   MenuList,
   MenuItem,
   Link,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+  Divider,
+  Box,
 } from "@chakra-ui/react";
 import SvgClipboardCheck from "@components/icons/ClipboardCheck";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import { useAuth } from "@contexts/auth";
+import { Fragment, useState } from "react";
+import useProjects from "@hooks/useProjects";
+import { ReactNode } from "react";
 
-const Header = () => {
+const User = () => {
   const { logout, user } = useAuth();
+
+  return (
+    <Menu>
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+        {user ? user.name || user.email.split("@")[0] : "Profile"}
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={logout}>Signout</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
+
+const Header = ({ projectButton }: { projectButton: ReactNode }) => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const { projects } = useProjects();
+  const pinnedProjects = projects?.filter((p) => p.pin);
 
   return (
     <Flex
@@ -34,18 +62,37 @@ const Header = () => {
           </Link>
         </NextLink>
 
-        <Heading size="sm">Projects</Heading>
-        <Heading size="sm">Users</Heading>
+        <Box
+          onMouseEnter={() => setIsPopoverOpen(true)}
+          onMouseLeave={() => setIsPopoverOpen(false)}
+        >
+          <Popover isOpen={isPopoverOpen} onClose={() => setIsPopoverOpen(false)}>
+            <PopoverTrigger>
+              <span>Projects</span>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>
+                <Heading size="sm">Favorite Projects:</Heading>
+              </PopoverHeader>
+              <PopoverBody>
+                {pinnedProjects?.map((pp) => (
+                  <Fragment key={pp.name}>
+                    <span>{pp.name}</span>
+                    <Divider />
+                  </Fragment>
+                ))}
+
+                {projectButton}
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Box>
+
+        <span>Users</span>
       </Stack>
 
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {user ? user.name || user.email.split("@")[0] : "Profile"}
-        </MenuButton>
-        <MenuList>
-          <MenuItem onClick={logout}>Signout</MenuItem>
-        </MenuList>
-      </Menu>
+      <User />
     </Flex>
   );
 };

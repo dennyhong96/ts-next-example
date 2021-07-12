@@ -27,6 +27,7 @@ const SearchPanel: FC<ISearchPanelProps> = (props) => {
           value={name ?? ""}
           onChange={(evt) => setParam({ ...param, name: evt.target.value })}
           width={500}
+          placeholder="Search projects..."
         />
         <IconButton
           onClick={() => setParam({ ...param, name: "" })}

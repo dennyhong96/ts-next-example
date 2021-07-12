@@ -17,7 +17,7 @@ const UserSelect = (props: IUserSelectProps) => {
 
   return (
     <Select value={personId} onChange={(evt) => onChange(evt.target.value)}>
-      <option value="">{defaultOptionName || "Select User"}</option>
+      <option value="">{defaultOptionName || "Select Person"}</option>
       {users?.map((u: IUser) => (
         <option key={u.id} value={u.id}>
           {u.name}

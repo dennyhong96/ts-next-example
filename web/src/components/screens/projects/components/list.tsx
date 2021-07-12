@@ -1,6 +1,20 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import NextLink from "next/link";
-import { Table, Thead, Tbody, Tr, Th, Td, Box, Link } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Box,
+  Link,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
@@ -14,10 +28,11 @@ interface IListProps {
   users: IUser[];
   isLoading: boolean;
   refresh: () => void;
+  projectButton: ReactNode;
 }
 
 const List: FC<IListProps> = (props) => {
-  const { list, users, isLoading, refresh } = props;
+  const { list, users, isLoading, refresh, projectButton } = props;
   const { mutate } = useEditProject();
 
   const handleEditProject = (id: string) => async (pin: boolean) => {
@@ -40,6 +55,7 @@ const List: FC<IListProps> = (props) => {
             <Th>Orgnization</Th>
             <Th>Person</Th>
             <Th>Created At</Th>
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -58,6 +74,16 @@ const List: FC<IListProps> = (props) => {
                 {users.find((u: IUser) => u.id === project.personId)?.name ?? "No user assigned"}
               </Td>
               <Td>{dayjs(project.created).format("MM-DD-YYYY")}</Td>
+              <Td>
+                <Menu>
+                  <MenuButton as={Button} size="sm" variant="ghost">
+                    ...
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>{projectButton}</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Td>
             </Tr>
           ))}
         </Tbody>

@@ -1,5 +1,6 @@
 import "@utils/wdyr";
-import { ChakraProvider } from "@chakra-ui/react";
+import { useState } from "react";
+import { Button, ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -9,6 +10,7 @@ import { AuthProvider } from "@contexts/auth";
 import theme from "@styles/theme";
 import { ErrorBoundary } from "@components/errorBoundary";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
+import ProjectModal from "@components/screens/projects/components/projectModal";
 
 // import { addData } from "addData";
 // addData();
@@ -25,14 +27,43 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   const Layout = Component.Layout ?? (({ children }) => children);
   const SubLayout = Component.SubLayout ?? (({ children }) => children);
 
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+
   return (
     <ChakraProvider theme={theme}>
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <Layout>
+            <Layout
+              projectButton={
+                <Button
+                  colorScheme="teal"
+                  size="sm"
+                  marginTop={4}
+                  onClick={() => setProjectModalOpen(true)}
+                >
+                  Create Project
+                </Button>
+              }
+            >
               <SubLayout>
-                <Component {...pageProps} />
+                <Component
+                  projectButton={
+                    <Button
+                      colorScheme="teal"
+                      size="sm"
+                      marginTop={4}
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      Create Project
+                    </Button>
+                  }
+                  {...pageProps}
+                />
+                <ProjectModal
+                  projectModalOpen={projectModalOpen}
+                  onClose={() => setProjectModalOpen(false)}
+                />
               </SubLayout>
             </Layout>
             <ReactQueryDevtools initialIsOpen={false} />
