@@ -1,5 +1,5 @@
 import "@utils/wdyr";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { Button, ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -29,37 +29,20 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
 
   const [projectModalOpen, setProjectModalOpen] = useState(false);
 
+  const projectButton: ReactNode = (
+    <Button colorScheme="teal" size="sm" marginTop={4} onClick={() => setProjectModalOpen(true)}>
+      Create Project
+    </Button>
+  );
+
   return (
     <ChakraProvider theme={theme}>
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <Layout
-              projectButton={
-                <Button
-                  colorScheme="teal"
-                  size="sm"
-                  marginTop={4}
-                  onClick={() => setProjectModalOpen(true)}
-                >
-                  Create Project
-                </Button>
-              }
-            >
+            <Layout projectButton={projectButton}>
               <SubLayout>
-                <Component
-                  projectButton={
-                    <Button
-                      colorScheme="teal"
-                      size="sm"
-                      marginTop={4}
-                      onClick={() => setProjectModalOpen(true)}
-                    >
-                      Create Project
-                    </Button>
-                  }
-                  {...pageProps}
-                />
+                <Component projectButton={projectButton} {...pageProps} />
                 <ProjectModal
                   projectModalOpen={projectModalOpen}
                   onClose={() => setProjectModalOpen(false)}
