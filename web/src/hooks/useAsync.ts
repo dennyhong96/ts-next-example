@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 import useMountedRef from "@hooks/useMountedRef";
 
 interface State<D> {
@@ -17,35 +17,50 @@ const defaultConfig = {
   throwOnError: false,
 };
 
+// Prevent memory leak
+const useSafeDispatch = <T>(dispatch: (action: T) => void) => {
+  const isMountedRef = useMountedRef();
+
+  return useCallback(
+    (action: T) => {
+      return isMountedRef.current ? dispatch(action) : void 0; // `void 0` is equal to `undefined`
+    },
+    [dispatch, isMountedRef],
+  );
+};
+
 const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConfig) => {
-  const [state, setState] = useState<State<D>>({
-    ...defaultInitialState,
-    ...initialState,
-  });
+  const [state, dispatch] = useReducer(
+    (state: State<D>, action: Partial<State<D>>) => ({ ...state, ...action }),
+    {
+      ...defaultInitialState,
+      ...initialState,
+    },
+  );
 
   // eslint-disable-next-line
   const [retry, setRetry] = useState(() => () => {}); // Lazy Init
 
-  const isMountedRef = useMountedRef();
+  const safeDispatch = useSafeDispatch(dispatch);
 
   const setData = useCallback(
     (data: D) =>
-      setState({
+      safeDispatch({
         data,
         stat: "success",
         error: null,
       }),
-    [],
+    [safeDispatch],
   );
 
   const setError = useCallback(
     (error: Error) =>
-      setState({
+      safeDispatch({
         error,
         data: null,
         stat: "error",
       }),
-    [],
+    [safeDispatch],
   );
 
   // run async request
@@ -61,14 +76,11 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
         }
       }); // Lazy Update
 
-      setState((prev) => ({ ...prev, stat: "loading" })); // Prevent useing 'state', causing infinite re-render
+      safeDispatch({ stat: "loading" });
 
       return promise
         .then((data) => {
-          // Prevent memory leak
-          if (isMountedRef.current) {
-            setData(data);
-          }
+          setData(data);
           return data;
         })
         .catch((err) => {
@@ -79,7 +91,7 @@ const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConf
           return err;
         });
     },
-    [setData, setError, initialConfig?.throwOnError, isMountedRef],
+    [setData, setError, initialConfig?.throwOnError, safeDispatch],
   );
 
   return {
