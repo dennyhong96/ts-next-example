@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import NextLink from "next/link";
 import {
   Table,
@@ -15,24 +15,26 @@ import {
   MenuItem,
   Button,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
 
-import Star from "@components/star";
 import { IProject, IUser } from "../index";
+import Star from "@components/star";
 import useEditProject from "@hooks/useEditProject";
+import { projectListActions } from "@store/slices/projectList.slice";
 
 interface IListProps {
   list: IProject[];
   users: IUser[];
   isLoading: boolean;
   refresh: () => void;
-  projectButton: ReactNode;
 }
 
 const List: FC<IListProps> = (props) => {
-  const { list, users, isLoading, refresh, projectButton } = props;
+  const dispatch = useDispatch();
+  const { list, users, isLoading, refresh } = props;
   const { mutate } = useEditProject();
 
   const handleEditProject = (id: string) => async (pin: boolean) => {
@@ -80,7 +82,9 @@ const List: FC<IListProps> = (props) => {
                     ...
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>{projectButton}</MenuItem>
+                    <MenuItem onClick={() => dispatch(projectListActions.openProjectModal())}>
+                      Create Project
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </Td>

@@ -1,3 +1,5 @@
+import { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
 import NextLink from "next/link";
 import {
   Flex,
@@ -18,13 +20,12 @@ import {
   Divider,
   Box,
 } from "@chakra-ui/react";
-import SvgClipboardCheck from "@components/icons/ClipboardCheck";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
+import SvgClipboardCheck from "@components/icons/ClipboardCheck";
 import { useAuth } from "@contexts/auth";
-import { Fragment, useState } from "react";
 import useProjects from "@hooks/useProjects";
-import { ReactNode } from "react";
+import { projectListActions } from "@store/slices/projectList.slice";
 
 const User = () => {
   const { logout, user } = useAuth();
@@ -41,7 +42,8 @@ const User = () => {
   );
 };
 
-const Header = ({ projectButton }: { projectButton: ReactNode }) => {
+const Header = () => {
+  const dispatch = useDispatch();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { projects } = useProjects();
   const pinnedProjects = projects?.filter((p) => p.pin);
@@ -82,8 +84,14 @@ const Header = ({ projectButton }: { projectButton: ReactNode }) => {
                     <Divider />
                   </Fragment>
                 ))}
-
-                {projectButton}
+                <Button
+                  colorScheme="teal"
+                  size="sm"
+                  marginTop={4}
+                  onClick={() => dispatch(projectListActions.openProjectModal())}
+                >
+                  Create Project
+                </Button>
               </PopoverBody>
             </PopoverContent>
           </Popover>

@@ -1,18 +1,17 @@
-import { ReactNode } from "react";
+import { FC, Fragment } from "react";
 import Head from "next/head";
 
 import PageWithLayoutType from "@localTypes/pageWithLayout";
 import Layout from "@components/layout";
 import ProjectsScreen from "@components/screens/projects";
-import { Fragment } from "react";
 
-const ProjectsPage = ({ projectButton }: { projectButton: ReactNode }) => {
+const ProjectsPage: FC = () => {
   return (
     <Fragment>
       <Head>
         <title>Project Management</title>
       </Head>
-      <ProjectsScreen projectButton={projectButton} />
+      <ProjectsScreen />
     </Fragment>
   );
 };
