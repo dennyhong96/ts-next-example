@@ -1,15 +1,16 @@
-import React, { createContext, useContext, FC, useEffect } from "react";
+import React, { createContext, FC, useEffect, Fragment, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { UserCredential } from "@firebase/auth-types";
 
-import { auth, db } from "@lib/firebase";
+import * as authStore from "@store/slices/auth.slice";
 import useAsync from "@hooks/useAsync";
-import useMount from "@hooks/useMount";
+import { auth, db } from "@lib/firebase";
 import { IUser } from "@components/screens/projects";
 import FullPageLoading from "@components/fullPageLoading";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
 
-interface IAuthForm {
+export interface IAuthForm {
   email: string;
   password: string;
 }
@@ -24,7 +25,7 @@ export const AuthContext = createContext<
   | undefined
 >(undefined);
 
-const bootstrapUser = async () => {
+export const bootstrapUser = async () => {
   if (typeof window === "undefined") return;
   const localUserResult: string | null = localStorage.getItem("usr");
   if (localUserResult && typeof localUserResult === "string") {
@@ -37,23 +38,40 @@ const bootstrapUser = async () => {
   }
 };
 
+export const useAuth = () => {
+  const dispatch = useDispatch();
+
+  const user = useSelector(authStore.selectUser);
+
+  console.log({ user });
+
+  const login = useCallback((form: IAuthForm) => dispatch(authStore.login(form)), [dispatch]);
+
+  const signup = useCallback((form: IAuthForm) => dispatch(authStore.signup(form)), [dispatch]);
+
+  const logout = useCallback(() => dispatch(authStore.logout()), [dispatch]);
+
+  return {
+    user,
+    login,
+    signup,
+    logout,
+  };
+};
+
+// Handles firstload and subscription
 export const AuthProvider: FC = ({ children }) => {
-  const {
-    data: user,
-    setData: setUser,
-    run,
-    isLoading,
-    isIdle,
-    isError,
-    error,
-  } = useAsync<IUser | null>();
+  const { run, isLoading, isIdle, isError, error } = useAsync<IUser | null>();
+
+  const dispatch: (...args: unknown[]) => Promise<IUser> = useDispatch();
+  const { user } = useAuth();
 
   const { replace } = useRouter();
 
-  useMount(() => {
-    run(bootstrapUser());
+  useEffect(() => {
+    run(dispatch(authStore.bootStrap()));
 
-    auth.onAuthStateChanged((firebaseUser) => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
         // User is signed in
         const userToStore = {
@@ -62,7 +80,7 @@ export const AuthProvider: FC = ({ children }) => {
           email: firebaseUser.email ?? "",
         };
 
-        setUser(userToStore);
+        dispatch(authStore.setUser(userToStore));
         localStorage.setItem("usr", JSON.stringify(userToStore));
 
         db.collection("users")
@@ -73,18 +91,15 @@ export const AuthProvider: FC = ({ children }) => {
           });
       } else {
         // User is signed out
-        setUser(null);
+        dispatch(authStore.setUser(null));
         localStorage.removeItem("usr");
       }
     });
-  });
 
-  const login = (form: IAuthForm) => auth.signInWithEmailAndPassword(form.email, form.password);
+    return unsubscribe;
+  }, [dispatch, run]);
 
-  const signup = (form: IAuthForm) =>
-    auth.createUserWithEmailAndPassword(form.email, form.password);
-
-  const logout = () => auth.signOut();
+  console.log({ isIdle, isLoading, user });
 
   useEffect(() => {
     if (!isIdle && !isLoading && !user) replace("/auth/login");
@@ -95,17 +110,5 @@ export const AuthProvider: FC = ({ children }) => {
 
   if (isError) return <FullPageErrorFallback error={error} />;
 
-  return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>{children}</AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-
-  return context;
+  return <Fragment>{children}</Fragment>;
 };

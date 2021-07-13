@@ -1,5 +1,4 @@
 import "@utils/wdyr";
-import { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -32,8 +31,8 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   return (
     <ChakraProvider theme={theme}>
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
-        <AuthProvider>
-          <Provider store={store}>
+        <Provider store={store}>
+          <AuthProvider>
             <QueryClientProvider client={queryClient}>
               <Layout>
                 <SubLayout>
@@ -43,8 +42,8 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
               </Layout>
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
-          </Provider>
-        </AuthProvider>
+          </AuthProvider>
+        </Provider>
       </ErrorBoundary>
     </ChakraProvider>
   );
