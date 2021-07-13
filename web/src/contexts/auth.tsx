@@ -37,6 +37,16 @@ const bootstrapUser = async () => {
   }
 };
 
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+
+  return context;
+};
+
 export const AuthProvider: FC = ({ children }) => {
   const {
     data: user,
@@ -51,7 +61,7 @@ export const AuthProvider: FC = ({ children }) => {
   const { replace } = useRouter();
 
   useMount(() => {
-    run(bootstrapUser());
+    run(bootstrapUser().then((user) => setUser(user)) as Promise<IUser | null>);
 
     auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
@@ -98,14 +108,4 @@ export const AuthProvider: FC = ({ children }) => {
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>{children}</AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-
-  return context;
 };

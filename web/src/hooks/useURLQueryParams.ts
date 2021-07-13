@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import queryString from "query-string";
+import { useState, useEffect, useCallback } from "react";
+import queryString, { StringifiableRecord } from "query-string";
 import { cleanObject } from "@utils/cleanObject";
 
 const useURLQueryParams = <K extends string>(keys: K[]) => {
@@ -7,7 +7,7 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
     const queryParamsObj = queryString.parseUrl(window.location.href).query;
     return keys.reduce(
       (acc, key) => ({ ...acc, [key]: queryParamsObj[key] ?? "" }),
-      {} as { [key in K]: string },
+      {} as { [key in K]: unknown },
     );
   };
 
@@ -25,17 +25,20 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
     // eslint-disable-next-line
   }, []); // primitive types and react states can be put into deps, objects can NOT be put into deps.
 
-  const setQuery = (newQuery: Partial<{ [key in K]: string }>) => {
-    const newQueryObj = cleanObject({ ...queryObj, ...newQuery }) as { [key in K]: string }; // TODO: type
+  const setQuery = useCallback(
+    (newQuery: Partial<{ [key in K]: unknown }>) => {
+      const newQueryObj = cleanObject({ ...queryObj, ...newQuery }) as { [key in K]: unknown }; // TODO: type
 
-    setQueryObj(newQueryObj);
+      setQueryObj(newQueryObj);
 
-    const newhref = queryString.stringifyUrl({
-      url: `${window.location.origin}${window.location.pathname}`,
-      query: newQueryObj,
-    });
-    history.pushState({}, "", newhref);
-  };
+      const newhref = queryString.stringifyUrl({
+        url: `${window.location.origin}${window.location.pathname}`,
+        query: newQueryObj as StringifiableRecord,
+      });
+      history.pushState({}, "", newhref);
+    },
+    [queryObj],
+  );
 
   return [queryObj, setQuery] as const; // `as cont` solves `tuple` return type issue
 };
