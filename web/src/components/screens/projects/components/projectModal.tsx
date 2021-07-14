@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -10,21 +11,20 @@ import {
   Input,
   Heading,
 } from "@chakra-ui/react";
-import { RefObject } from "react";
 
-const ProjectModal = (props: {
-  projectModalOpen: boolean;
-  onClose: () => void;
-  returnFocusRef?: RefObject<HTMLElement>;
-}) => {
-  const { projectModalOpen, onClose, returnFocusRef } = props;
+import useProjectModal from "@hooks/useProjectModal";
+
+const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
+  const { returnFocusRef } = props;
+
+  const { projectModalOpen, close } = useProjectModal();
 
   return (
     <Drawer
       size="full"
       isOpen={projectModalOpen}
       placement="right"
-      onClose={onClose}
+      onClose={close}
       finalFocusRef={returnFocusRef}
     >
       <DrawerOverlay />
@@ -39,7 +39,7 @@ const ProjectModal = (props: {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
+          <Button variant="outline" mr={3} onClick={close}>
             Cancel
           </Button>
           <Button colorScheme="blue">Save</Button>

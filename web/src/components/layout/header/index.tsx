@@ -24,7 +24,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useAuth } from "@contexts/auth";
 import { Fragment, useState } from "react";
 import useProjects from "@hooks/useProjects";
-import { ReactNode } from "react";
+import useProjectModal from "@hooks/useProjectModal";
 
 const User = () => {
   const { logout, user } = useAuth();
@@ -41,7 +41,8 @@ const User = () => {
   );
 };
 
-const Header = ({ projectButton }: { projectButton: ReactNode }) => {
+const Header = () => {
+  const { open } = useProjectModal();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { projects } = useProjects();
   const pinnedProjects = projects?.filter((p) => p.pin);
@@ -83,7 +84,9 @@ const Header = ({ projectButton }: { projectButton: ReactNode }) => {
                   </Fragment>
                 ))}
 
-                {projectButton}
+                <Button colorScheme="teal" size="sm" marginTop={4} onClick={open}>
+                  Create Project
+                </Button>
               </PopoverBody>
             </PopoverContent>
           </Popover>

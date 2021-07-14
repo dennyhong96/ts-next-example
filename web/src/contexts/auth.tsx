@@ -61,7 +61,7 @@ export const AuthProvider: FC = ({ children }) => {
   const { replace } = useRouter();
 
   useMount(() => {
-    run(bootstrapUser().then((user) => setUser(user)) as Promise<IUser | null>);
+    run(bootstrapUser());
 
     auth.onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import NextLink from "next/link";
 import {
   Table,
@@ -22,17 +22,18 @@ import { css } from "@emotion/react";
 import Star from "@components/star";
 import { IProject, IUser } from "../index";
 import useEditProject from "@hooks/useEditProject";
+import useProjectModal from "@hooks/useProjectModal";
 
 interface IListProps {
   list: IProject[];
   users: IUser[];
   isLoading: boolean;
   refresh: () => void;
-  projectButton: ReactNode;
 }
 
 const List: FC<IListProps> = (props) => {
-  const { list, users, isLoading, refresh, projectButton } = props;
+  const { open } = useProjectModal();
+  const { list, users, isLoading, refresh } = props;
   const { mutate } = useEditProject();
 
   const handleEditProject = (id: string) => async (pin: boolean) => {
@@ -80,7 +81,7 @@ const List: FC<IListProps> = (props) => {
                     ...
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>{projectButton}</MenuItem>
+                    <MenuItem onClick={open}>Edit Project</MenuItem>
                   </MenuList>
                 </Menu>
               </Td>

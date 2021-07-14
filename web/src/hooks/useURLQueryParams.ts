@@ -17,11 +17,15 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
   );
 
   useEffect(() => {
-    const handlePopState = () => setQueryObj(filterQueryParams());
-    window.addEventListener("popstate", handlePopState);
+    const handleUrlChange = () => setQueryObj(filterQueryParams());
+
+    window.addEventListener("popstate", handleUrlChange); // When browser back and forward button is clicked
+    window.addEventListener("setQueryObject", handleUrlChange); // When setQueryObj is used
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("popstate", handleUrlChange);
+      window.removeEventListener("setQueryObject", handleUrlChange);
     };
+
     // eslint-disable-next-line
   }, []); // primitive types and react states can be put into deps, objects can NOT be put into deps.
 
@@ -29,13 +33,17 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
     (newQuery: Partial<{ [key in K]: unknown }>) => {
       const newQueryObj = cleanObject({ ...queryObj, ...newQuery }) as { [key in K]: unknown }; // TODO: type
 
-      setQueryObj(newQueryObj);
-
+      // Modify url
       const newhref = queryString.stringifyUrl({
         url: `${window.location.origin}${window.location.pathname}`,
         query: newQueryObj as StringifiableRecord,
       });
       history.pushState({}, "", newhref);
+
+      setQueryObj(newQueryObj);
+
+      // broadcast other hook instances to refresh state
+      window.dispatchEvent(new Event("setQueryObject"));
     },
     [queryObj],
   );

@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 
 import useURLQueryParams from "@hooks/useURLQueryParams";
 import useProjects from "@hooks/useProjects";
@@ -7,6 +7,7 @@ import useUsers from "@hooks/useUsers";
 import List from "./components/list";
 import SearchPanel from "./components/search-panel";
 import useDebounce from "@hooks/useDebounce";
+import useProjectModal from "@hooks/useProjectModal";
 
 export interface IUser {
   id: string;
@@ -23,14 +24,18 @@ export interface IProject {
   pin?: boolean;
 }
 
-const ProjectsScreen = ({ projectButton }: { projectButton: ReactNode }) => {
+export interface IParam {
+  name: string;
+  personId: string;
+}
+
+const ProjectsScreen = () => {
+  const { open } = useProjectModal();
   const [param, setParam] = useURLQueryParams(["name", "personId"]);
-  const debouncedParam = useDebounce(param, 200);
+  const debouncedParam = useDebounce(param as IParam, 200);
 
   const { users } = useUsers();
   const { projects, isLoading, error, retry } = useProjects(debouncedParam);
-
-  console.log({ projects });
 
   // console.log({ param });
   // console.log({ projects });
@@ -40,10 +45,12 @@ const ProjectsScreen = ({ projectButton }: { projectButton: ReactNode }) => {
     <Box padding={4}>
       <Flex justifyContent="space-between">
         <Heading mb={4}>Projects List</Heading>
-        {projectButton}
+        <Button colorScheme="teal" size="sm" marginTop={4} onClick={open}>
+          Create Project
+        </Button>
       </Flex>
 
-      <SearchPanel param={param} setParam={setParam} />
+      <SearchPanel param={param as IParam} setParam={setParam} />
 
       {error ? (
         <Text color="red" fontSize="md">
@@ -51,13 +58,7 @@ const ProjectsScreen = ({ projectButton }: { projectButton: ReactNode }) => {
         </Text>
       ) : null}
 
-      <List
-        list={projects ?? []}
-        users={users ?? []}
-        isLoading={isLoading}
-        refresh={retry}
-        projectButton={projectButton}
-      />
+      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} refresh={retry} />
     </Box>
   );
 };

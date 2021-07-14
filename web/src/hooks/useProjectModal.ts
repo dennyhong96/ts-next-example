@@ -2,16 +2,17 @@ import useURLQueryParams from "./useURLQueryParams";
 
 // Project Modal Global State Management (in URL)
 const useProjectModal = () => {
-  const [{ projectCreate }, setProjectCreate] = useURLQueryParams(["projectCreate"]);
+  const [queryObject, setQueryObject] = useURLQueryParams(["projectCreate"]);
 
-  const open = () => setProjectCreate({ projectCreate: true });
+  const open = () => setQueryObject({ projectCreate: true });
 
-  const close = () => setProjectCreate({ projectCreate: false });
+  const close = () => setQueryObject({ projectCreate: undefined });
 
   // return [projectCreate === "true", open, close] as const;
 
   return {
-    projectModalOpen: projectCreate === "true",
+    projectCreate: queryObject.projectCreate,
+    projectModalOpen: !!queryObject.projectCreate,
     open,
     close,
   };
