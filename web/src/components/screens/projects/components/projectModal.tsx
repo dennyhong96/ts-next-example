@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import UserSelect from "@components/userSelect";
 import useEditProject from "@hooks/useEditProject";
 import useAddProject from "@hooks/useAddProject";
+import ErrorBox from "@components/errorBox";
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -36,8 +37,8 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
 
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const { projectModalOpen, close, isLoading, editingProject } = useProjectModal();
-  const { mutate: editProject } = useEditProject();
-  const { mutate: addProject } = useAddProject();
+  const { mutate: editProject, error: editError } = useEditProject();
+  const { mutate: addProject, error: addError } = useAddProject();
 
   useEffect(() => {
     if (!projectModalOpen || !editingProject) return;
@@ -142,6 +143,8 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
                     <UserSelect personId={form.userId} onChange={handleSelectUser} />
                   </FormControl>
 
+                  <ErrorBox error={editError || addError} />
+
                   <Button type="submit" colorScheme="teal">
                     {editingProject ? "Confirm Edits" : "Add Project"}
                   </Button>
@@ -153,7 +156,12 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
               <Button variant="outline" mr={3} onClick={close}>
                 Cancel
               </Button>
-              <Button colorScheme="blue">Save</Button>
+              <Button
+                colorScheme="blue"
+                onClick={editingProject ? handleEditProject : handleAddProject}
+              >
+                Save
+              </Button>
             </DrawerFooter>
           </Fragment>
         )}

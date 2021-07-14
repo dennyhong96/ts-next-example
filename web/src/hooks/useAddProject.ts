@@ -8,7 +8,7 @@ const useAddProject = () => {
 
   return useMutation(
     (params: Partial<IProject>) => {
-      return db.collection("projects").add({ ...params });
+      return db.collection("projects").add({ ...params, created: params.created ?? Date.now() });
     },
     {
       onSuccess() {
