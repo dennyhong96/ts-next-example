@@ -8,6 +8,7 @@ import List from "./components/list";
 import SearchPanel from "./components/search-panel";
 import useDebounce from "@hooks/useDebounce";
 import useProjectModal from "@hooks/useProjectModal";
+import ErrorBox from "@components/errorBox";
 
 export interface IUser {
   id: string;
@@ -35,10 +36,10 @@ const ProjectsScreen = () => {
   const debouncedParam = useDebounce(param as IParam, 200);
 
   const { users } = useUsers();
-  const { projects, isLoading, error, retry } = useProjects(debouncedParam);
+  const { data: projects, isLoading, error } = useProjects(debouncedParam);
 
   // console.log({ param });
-  // console.log({ projects });
+  console.log({ projects });
   // console.log({ users });
 
   return (
@@ -52,13 +53,9 @@ const ProjectsScreen = () => {
 
       <SearchPanel param={param as IParam} setParam={setParam} />
 
-      {error ? (
-        <Text color="red" fontSize="md">
-          {error.message}
-        </Text>
-      ) : null}
+      <ErrorBox error={error} />
 
-      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} refresh={retry} />
+      <List list={projects ?? []} users={users ?? []} isLoading={isLoading} />
     </Box>
   );
 };

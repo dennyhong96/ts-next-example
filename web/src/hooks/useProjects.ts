@@ -1,13 +1,11 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
+import { useQuery } from "react-query";
 
 import { db } from "@lib/firebase";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
-import useAsync from "@hooks/useAsync";
 import { IProject } from "@components/screens/projects";
 
 const useProjects = (param?: Partial<IProject>) => {
-  const { data: projects, isLoading, error, run, retry } = useAsync<IProject[]>();
-
   const listProjects = useCallback(async () => {
     type projectRefType = CollectionReference<DocumentData> | Query<DocumentData>;
 
@@ -34,16 +32,7 @@ const useProjects = (param?: Partial<IProject>) => {
     return items;
   }, [param]);
 
-  useEffect(() => {
-    run(listProjects(), { retry: listProjects });
-  }, [param, run, listProjects]);
-
-  return {
-    projects,
-    isLoading,
-    error,
-    retry,
-  };
+  return useQuery<IProject[], Error>(["projects", param], () => listProjects());
 };
 
 export default useProjects;

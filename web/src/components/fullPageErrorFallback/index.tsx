@@ -1,4 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+
+import ErrorBox from "@components/errorBox";
 
 const FullPageErrorFallback = ({ error }: { error: Error | null }) => {
   return (
@@ -9,9 +11,7 @@ const FullPageErrorFallback = ({ error }: { error: Error | null }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Text color="red" size="lg">
-        {error?.message ?? "An error orrcured."}
-      </Text>
+      <ErrorBox error={error} />
     </Flex>
   );
 };

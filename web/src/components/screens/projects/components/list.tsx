@@ -28,18 +28,14 @@ interface IListProps {
   list: IProject[];
   users: IUser[];
   isLoading: boolean;
-  refresh: () => void;
 }
 
 const List: FC<IListProps> = (props) => {
-  const { open } = useProjectModal();
-  const { list, users, isLoading, refresh } = props;
+  const { editProject } = useProjectModal();
+  const { list, users, isLoading } = props;
   const { mutate } = useEditProject();
 
-  const handleEditProject = (id: string) => async (pin: boolean) => {
-    await mutate({ id, pin });
-    refresh();
-  };
+  const handleEditProject = (id: string) => async (pin: boolean) => mutate({ id, pin });
 
   // TODO: use React Table with sorting
   return (
@@ -81,7 +77,8 @@ const List: FC<IListProps> = (props) => {
                     ...
                   </MenuButton>
                   <MenuList>
-                    <MenuItem onClick={open}>Edit Project</MenuItem>
+                    <MenuItem onClick={() => editProject(project.id)}>Edit Project</MenuItem>
+                    <MenuItem onClick={() => editProject(project.id)}>Delete Project</MenuItem>
                   </MenuList>
                 </Menu>
               </Td>

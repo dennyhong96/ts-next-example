@@ -44,7 +44,7 @@ const User = () => {
 const Header = () => {
   const { open } = useProjectModal();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { projects } = useProjects();
+  const { data: projects } = useProjects();
   const pinnedProjects = projects?.filter((p) => p.pin);
 
   return (

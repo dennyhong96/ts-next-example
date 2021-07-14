@@ -1,25 +1,25 @@
 import { IProject } from "@components/screens/projects";
+import { useMutation, useQueryClient } from "react-query";
 
 import { db } from "@lib/firebase";
-import useAsync from "@hooks/useAsync";
 
 const useEditProject = () => {
-  const { run, ...asyncRes } = useAsync();
+  const client = useQueryClient();
 
-  const mutate = (params: Partial<IProject>) => {
-    const { id, ...restParams } = params;
-    run(
-      db
+  return useMutation(
+    (params: Partial<IProject>) => {
+      const { id, ...restParams } = params;
+      return db
         .collection("projects")
         .doc(id)
-        .set({ ...restParams }, { merge: true }),
-    );
-  };
-
-  return {
-    mutate,
-    ...asyncRes,
-  };
+        .set({ ...restParams }, { merge: true });
+    },
+    {
+      onSuccess() {
+        client.invalidateQueries("projects");
+      },
+    },
+  );
 };
 
 export default useEditProject;
