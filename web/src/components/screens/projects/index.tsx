@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Heading, Button } from "@chakra-ui/react";
 
-import useURLQueryParams from "@hooks/useURLQueryParams";
 import useProjects from "@hooks/useProjects";
 import useUsers from "@hooks/useUsers";
 import List from "./components/list";
@@ -9,6 +8,7 @@ import SearchPanel from "./components/search-panel";
 import useDebounce from "@hooks/useDebounce";
 import useProjectModal from "@hooks/useProjectModal";
 import ErrorBox from "@components/errorBox";
+import useProjectsSearchParams from "@hooks/useProjectsSearchParams";
 
 export interface IUser {
   id: string;
@@ -32,7 +32,8 @@ export interface IParam {
 
 const ProjectsScreen = () => {
   const { open } = useProjectModal();
-  const [param, setParam] = useURLQueryParams(["name", "personId"]);
+  const [param, setParam] = useProjectsSearchParams();
+
   const debouncedParam = useDebounce(param as IParam, 200);
 
   const { users } = useUsers();

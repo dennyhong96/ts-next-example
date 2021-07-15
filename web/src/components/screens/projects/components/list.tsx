@@ -23,6 +23,7 @@ import Star from "@components/star";
 import { IProject, IUser } from "../index";
 import useEditProject from "@hooks/useEditProject";
 import useProjectModal from "@hooks/useProjectModal";
+import useProjectsQueryKey from "@hooks/useProjectsQueryKey";
 
 interface IListProps {
   list: IProject[];
@@ -33,7 +34,7 @@ interface IListProps {
 const List: FC<IListProps> = (props) => {
   const { editProject } = useProjectModal();
   const { list, users, isLoading } = props;
-  const { mutate } = useEditProject();
+  const { mutate } = useEditProject(useProjectsQueryKey());
 
   const handleEditProject = (id: string) => async (pin: boolean) => mutate({ id, pin });
 

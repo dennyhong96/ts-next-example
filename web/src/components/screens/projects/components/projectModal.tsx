@@ -25,6 +25,7 @@ import UserSelect from "@components/userSelect";
 import useEditProject from "@hooks/useEditProject";
 import useAddProject from "@hooks/useAddProject";
 import ErrorBox from "@components/errorBox";
+import useProjectsQueryKey from "@hooks/useProjectsQueryKey";
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -37,8 +38,8 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
 
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const { projectModalOpen, close, isLoading, editingProject } = useProjectModal();
-  const { mutate: editProject, error: editError } = useEditProject();
-  const { mutate: addProject, error: addError } = useAddProject();
+  const { mutate: editProject, error: editError } = useEditProject(useProjectsQueryKey());
+  const { mutate: addProject, error: addError } = useAddProject(useProjectsQueryKey());
 
   useEffect(() => {
     if (!projectModalOpen || !editingProject) return;

@@ -1,21 +1,13 @@
-import { IProject } from "@components/screens/projects";
-import { useMutation, useQueryClient } from "react-query";
+import { QueryKey, useMutation } from "react-query";
 
 import { db } from "@lib/firebase";
+import { useOptimisticCreate } from "./useOptimisticOptions";
+import { IProject } from "@components/screens/projects";
 
-const useAddProject = () => {
-  const client = useQueryClient();
-
-  return useMutation(
-    (params: Partial<IProject>) => {
-      return db.collection("projects").add({ ...params, created: params.created ?? Date.now() });
-    },
-    {
-      onSuccess() {
-        client.invalidateQueries("projects");
-      },
-    },
-  );
+const useAddProject = (queryKey: QueryKey) => {
+  return useMutation((params: Partial<IProject>) => {
+    return db.collection("projects").add({ ...params, created: params.created ?? Date.now() });
+  }, useOptimisticCreate(queryKey));
 };
 
 export default useAddProject;
