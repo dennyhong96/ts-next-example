@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { LegacyRef, MutableRefObject, ReactNode } from "react";
 import { Divider, Heading, Stack, Box, Text } from "@chakra-ui/react";
 
 import { IKanban } from "@localTypes/kanban";
 import useTasks from "@hooks/useTasks";
 import useTaskTypes from "@hooks/useTaskTypes";
+import CreateTask from "./createTask";
 
 export const ColumnContainer = ({ children }: { children: ReactNode }) => {
   return (
@@ -15,6 +16,27 @@ export const ColumnContainer = ({ children }: { children: ReactNode }) => {
       paddingBottom={6}
       paddingLeft={4}
       paddingRight={4}
+    >
+      {children}
+    </Stack>
+  );
+};
+
+export const TaskContainer = ({
+  children,
+  containerRef,
+}: {
+  children: ReactNode;
+  containerRef?: MutableRefObject<HTMLElement | undefined>;
+}) => {
+  return (
+    <Stack
+      ref={containerRef as LegacyRef<HTMLDivElement> | undefined}
+      direction="row"
+      align="center"
+      background="white"
+      padding={4}
+      borderRadius={4}
     >
       {children}
     </Stack>
@@ -39,21 +61,16 @@ const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
           .map((task) => {
             const taskType = taskTypes?.find((tt) => tt.id === task.typeId)?.name;
             return taskType ? (
-              <Stack
-                key={task.id}
-                direction="row"
-                align="center"
-                background="white"
-                padding={4}
-                borderRadius={4}
-              >
+              <TaskContainer key={task.id}>
                 <Text>{task.name}</Text>
                 <Box height={4} width={4}>
                   <img src={`/assets/icons/${taskType}.svg`} alt={taskType} />
                 </Box>
-              </Stack>
+              </TaskContainer>
             ) : null;
           })}
+
+        <CreateTask kanbanId={kanban.id} />
       </Stack>
     </ColumnContainer>
   );

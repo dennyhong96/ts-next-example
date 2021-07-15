@@ -43,7 +43,7 @@ const useTasks = () => {
     return items;
   }, [params]);
 
-  return useQuery<ITask[], Error>(["tasks", useTasksQueryKey()], () => listTasks());
+  return useQuery<ITask[], Error>(useTasksQueryKey(), () => listTasks());
 };
 
 export default useTasks;
