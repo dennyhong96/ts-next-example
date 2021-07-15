@@ -2,7 +2,7 @@ import { QueryKey, useMutation } from "react-query";
 
 import { db } from "@lib/firebase";
 import { useOptimisticCreate } from "./useOptimisticOptions";
-import { IProject } from "@components/screens/projects";
+import { IProject } from "@localTypes/projects";
 
 const useAddProjects = (queryKey: QueryKey) => {
   return useMutation((params: Partial<IProject>) => {

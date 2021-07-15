@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 import { db } from "@lib/firebase";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
-import { IProject } from "@components/screens/projects";
+import { IProject } from "@localTypes/projects";
 
 const useProjects = (param?: Partial<IProject>) => {
   const listProjects = useCallback(async () => {

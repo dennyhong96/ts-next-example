@@ -1,8 +1,8 @@
 import { QueryKey, useMutation } from "react-query";
 
 import { db } from "@lib/firebase";
-import { IProject } from "@components/screens/projects";
 import { useOptimisticEdit } from "./useOptimisticOptions";
+import { IProject } from "@localTypes/projects";
 
 const useEditProject = (queryKey: QueryKey) => {
   return useMutation((params: Partial<IProject>) => {

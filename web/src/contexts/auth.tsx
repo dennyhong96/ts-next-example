@@ -96,7 +96,7 @@ export const AuthProvider: FC = ({ children }) => {
   const signup = (form: IAuthForm) =>
     auth.createUserWithEmailAndPassword(form.email, form.password);
 
-  const logout = () => {
+  const logout = async () => {
     auth.signOut();
     client.clear(); // Remove react-query cache
   };

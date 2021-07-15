@@ -3,7 +3,7 @@ import { Stack, Input, Box, IconButton } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 
 import UserSelect from "@components/userSelect";
-import { IProject } from "../index";
+import { IProject } from "../../../../types/projects";
 
 interface IParam {
   name: string;

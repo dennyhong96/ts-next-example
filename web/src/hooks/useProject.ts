@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import { db } from "@lib/firebase";
-import { IProject } from "@components/screens/projects";
+import { IProject } from "@localTypes/projects";
 
 const useProject = (id?: string) =>
   useQuery<IProject, Error>(

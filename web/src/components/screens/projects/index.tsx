@@ -16,15 +16,6 @@ export interface IUser {
   email: string;
 }
 
-export interface IProject {
-  id: string;
-  name: string;
-  organization: string;
-  personId: string;
-  created: string;
-  pin?: boolean;
-}
-
 export interface IParam {
   name: string;
   personId: string;

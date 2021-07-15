@@ -21,7 +21,8 @@ import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
 
 import Star from "@components/star";
-import { IProject, IUser } from "../index";
+import { IUser } from "../index";
+import { IProject } from "../../../../types/projects";
 import useEditProject from "@hooks/useEditProject";
 import useProjectModal from "@hooks/useProjectModal";
 import useProjectsQueryKey from "@hooks/useProjectsQueryKey";
