@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "@chakra-ui/react";
 
 import useUsers from "@hooks/useUsers";
-import { IUser } from "@components/screens/projects";
+import { IUser } from "@localTypes/user";
 
 interface IUserSelectProps {
   personId: string;

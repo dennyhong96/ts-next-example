@@ -21,7 +21,7 @@ import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/react";
 
 import Star from "@components/star";
-import { IUser } from "../index";
+
 import { IProject } from "../../../../types/projects";
 import useEditProject from "@hooks/useEditProject";
 import useProjectModal from "@hooks/useProjectModal";
@@ -29,6 +29,7 @@ import useProjectsQueryKey from "@hooks/useProjectsQueryKey";
 import useDeleteProjects from "@hooks/useDeleteProjects";
 import { useState } from "react";
 import Modal from "@components/modal";
+import { IUser } from "@localTypes/user";
 
 interface IListProps {
   list: IProject[];

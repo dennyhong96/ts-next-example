@@ -10,12 +10,6 @@ import useProjectModal from "@hooks/useProjectModal";
 import ErrorBox from "@components/errorBox";
 import useProjectsSearchParams from "@hooks/useProjectsSearchParams";
 
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
 export interface IParam {
   name: string;
   personId: string;

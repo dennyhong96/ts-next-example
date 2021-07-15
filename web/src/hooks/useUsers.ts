@@ -1,7 +1,8 @@
 import { db } from "@lib/firebase";
 import useMount from "@hooks/useMount";
-import { IUser } from "@components/screens/projects";
+
 import useAsync from "./useAsync";
+import { IUser } from "@localTypes/user";
 
 const useUsers = () => {
   const { data: users, isLoading, error, run } = useAsync<IUser[]>();
