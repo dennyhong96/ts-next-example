@@ -10,7 +10,6 @@ const useOptimisticOptions = (
       client.invalidateQueries(queryKey);
     },
     async onMutate(target: any) {
-      console.log("mutate");
       const previousItems = client.getQueryData(queryKey);
       client.setQueryData(queryKey, (old?: any[]) => callback(target, old));
       return { previousItems };
