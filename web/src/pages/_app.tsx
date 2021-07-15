@@ -29,8 +29,8 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   return (
     <ChakraProvider theme={theme}>
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
             <Layout>
               <SubLayout>
                 <Component {...pageProps} />
@@ -38,8 +38,8 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
               </SubLayout>
             </Layout>
             <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </ErrorBoundary>
     </ChakraProvider>
   );

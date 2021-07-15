@@ -1,5 +1,6 @@
 import React, { createContext, useContext, FC, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useQueryClient } from "react-query";
 import { UserCredential } from "@firebase/auth-types";
 
 import { auth, db } from "@lib/firebase";
@@ -59,6 +60,7 @@ export const AuthProvider: FC = ({ children }) => {
   } = useAsync<IUser | null>();
 
   const { replace } = useRouter();
+  const client = useQueryClient();
 
   useMount(() => {
     run(bootstrapUser());
@@ -94,7 +96,10 @@ export const AuthProvider: FC = ({ children }) => {
   const signup = (form: IAuthForm) =>
     auth.createUserWithEmailAndPassword(form.email, form.password);
 
-  const logout = () => auth.signOut();
+  const logout = () => {
+    auth.signOut();
+    client.clear(); // Remove react-query cache
+  };
 
   useEffect(() => {
     if (!isIdle && !isLoading && !user) replace("/auth/login");

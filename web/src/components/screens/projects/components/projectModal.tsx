@@ -54,6 +54,11 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
     setForm((prev) => ({ ...prev, userId: newUserId }));
   };
 
+  const handleClose = () => {
+    close();
+    setForm(INITIAL_FORM_STATE);
+  };
+
   const handleEditProject = async (evt: FormEvent) => {
     evt.preventDefault();
     if (!editingProject) return;
@@ -63,8 +68,7 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
       organization: form.organization,
       personId: form.userId,
     });
-    close();
-    setForm(INITIAL_FORM_STATE);
+    handleClose();
   };
 
   const handleAddProject = async (evt: FormEvent) => {
@@ -75,8 +79,7 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
       organization: form.organization,
       personId: form.userId,
     });
-    close();
-    setForm(INITIAL_FORM_STATE);
+    handleClose();
   };
 
   return (
@@ -84,7 +87,7 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
       size="full"
       isOpen={projectModalOpen}
       placement="right"
-      onClose={close}
+      onClose={handleClose}
       finalFocusRef={returnFocusRef}
     >
       <DrawerOverlay />
@@ -154,7 +157,7 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
             </DrawerBody>
 
             <DrawerFooter>
-              <Button variant="outline" mr={3} onClick={close}>
+              <Button variant="outline" mr={3} onClick={handleClose}>
                 Cancel
               </Button>
               <Button
