@@ -25,7 +25,7 @@ const ProjectsScreen = () => {
   const { data: projects, isLoading, error } = useProjects(debouncedParam);
 
   // console.log({ param });
-  console.log({ projects });
+  // console.log({ projects });
   // console.log({ users });
 
   return (
