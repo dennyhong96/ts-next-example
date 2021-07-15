@@ -32,7 +32,7 @@ const ProjectsScreen = () => {
     <Box padding={4}>
       <Flex justifyContent="space-between">
         <Heading mb={4}>Projects List</Heading>
-        <Button colorScheme="teal" size="sm" marginTop={4} onClick={open}>
+        <Button colorScheme="teal" marginTop={4} onClick={open}>
           Create Project
         </Button>
       </Flex>

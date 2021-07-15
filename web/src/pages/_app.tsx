@@ -1,5 +1,5 @@
 import "@utils/wdyr";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -33,7 +33,9 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
           <AuthProvider>
             <Layout>
               <SubLayout>
-                <Component {...pageProps} />
+                <Box as="main" id="main" width="100%" height="100%">
+                  <Component {...pageProps} />
+                </Box>
                 <ProjectModal />
               </SubLayout>
             </Layout>

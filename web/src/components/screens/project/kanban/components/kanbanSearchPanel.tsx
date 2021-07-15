@@ -18,17 +18,25 @@ const KanbanSearchPanel = () => {
 
   return (
     <Stack direction="row" marginTop={8} marginBottom={8}>
-      <Box>
+      <Box minWidth="400px">
         <Input
-          placeholder="Task Name"
+          placeholder="Task name"
           value={searchParams.name}
           onChange={(evt) => setSearchParams({ ...searchParams, name: evt.target.value })}
         />
       </Box>
 
-      <Box>
+      <Box minWidth="200px">
+        <TaskTypesSelect
+          defaultOptionName="Task types"
+          taskTypeId={searchParams.typeId || ""}
+          onChange={(newTaskTypeId) => setSearchParams({ ...searchParams, typeId: newTaskTypeId })}
+        />
+      </Box>
+
+      <Box minWidth="200px">
         <UserSelect
-          defaultOptionName="Select Processor"
+          defaultOptionName="Processor"
           personId={searchParams.processorId || ""}
           onChange={(newProcessorId) =>
             setSearchParams({ ...searchParams, processorId: newProcessorId })
@@ -36,15 +44,8 @@ const KanbanSearchPanel = () => {
         />
       </Box>
 
-      <Box>
-        <TaskTypesSelect
-          taskTypeId={searchParams.typeId || ""}
-          onChange={(newTaskTypeId) => setSearchParams({ ...searchParams, typeId: newTaskTypeId })}
-        />
-      </Box>
-
       <Button colorScheme="teal" onClick={resetSearchParams}>
-        Clear Filters
+        Clear filters
       </Button>
     </Stack>
   );
