@@ -1,15 +1,17 @@
+import { ReactNode } from "react";
+import { Stack, Box } from "@chakra-ui/react";
+
 import { useAuth } from "@contexts/auth";
-import { Fragment, ReactNode } from "react";
 
 import Header from "./header";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   return user ? (
-    <Fragment>
+    <Stack height="100%">
       <Header />
-      {children}
-    </Fragment>
+      <Box flex="1">{children}</Box>
+    </Stack>
   ) : null;
 };
 

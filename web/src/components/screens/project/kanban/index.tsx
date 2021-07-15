@@ -1,4 +1,4 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import { Heading, Stack, Box } from "@chakra-ui/react";
 
 import useKanbans from "@hooks/useKanbans";
 import useProjectInUrl from "@hooks/useProjectInUrl";
@@ -11,7 +11,7 @@ const ProjectKanbanScreen = () => {
   const { data: kanbans } = useKanbans();
 
   return (
-    <div>
+    <Box padding={4}>
       <Heading>{project?.name} Kanban</Heading>
       <KanbanSearchPanel />
       <Stack direction="row" overflow="hidden" spacing={4}>
@@ -19,7 +19,7 @@ const ProjectKanbanScreen = () => {
           <KanbanColumn key={kanban.id} kanban={kanban} />
         ))}
       </Stack>
-    </div>
+    </Box>
   );
 };
 
