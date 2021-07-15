@@ -1,7 +1,7 @@
 import useTasksSearchParams from "./useTasksSearchParams";
 
 const useTasksQueryKey = () => {
-  return ["tasks", useTasksSearchParams()];
+  return ["tasks", useTasksSearchParams()[0]];
 };
 
 export default useTasksQueryKey;

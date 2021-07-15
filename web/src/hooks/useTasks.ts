@@ -8,15 +8,27 @@ import useTasksQueryKey from "./useTasksQueryKey";
 import useTasksSearchParams from "./useTasksSearchParams";
 
 const useTasks = () => {
-  const { projectId } = useTasksSearchParams();
+  const [params] = useTasksSearchParams();
 
   const listTasks = useCallback(async () => {
     type tasksRefType = CollectionReference<DocumentData> | Query<DocumentData>;
 
     let tasksRef: tasksRefType = db.collection("tasks");
 
-    if (projectId) {
-      tasksRef = tasksRef.where("projectId", "==", projectId);
+    if (params.projectId) {
+      tasksRef = tasksRef.where("projectId", "==", params.projectId);
+    }
+
+    if (params.typeId) {
+      tasksRef = tasksRef.where("typeId", "==", params.typeId);
+    }
+
+    if (params.processorId) {
+      tasksRef = tasksRef.where("processorId", "==", params.processorId);
+    }
+
+    if (params.name) {
+      tasksRef = tasksRef.where("name", "==", params.name);
     }
 
     const snapshots = await tasksRef.get();
@@ -29,7 +41,7 @@ const useTasks = () => {
     });
 
     return items;
-  }, [projectId]);
+  }, [params]);
 
   return useQuery<ITask[], Error>(["tasks", useTasksQueryKey()], () => listTasks());
 };
