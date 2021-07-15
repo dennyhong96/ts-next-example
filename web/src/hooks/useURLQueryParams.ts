@@ -17,13 +17,15 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
   );
 
   useEffect(() => {
-    const handleUrlChange = () => setQueryObj(filterQueryParams());
+    const handleUrlChange = () => {
+      setQueryObj(filterQueryParams());
+    };
 
     window.addEventListener("popstate", handleUrlChange); // When browser back and forward button is clicked
-    window.addEventListener("setQueryObject", handleUrlChange); // When setQueryObj is used
+    window.addEventListener("urlChange", handleUrlChange); // When setQueryObj is used
     return () => {
       window.removeEventListener("popstate", handleUrlChange);
-      window.removeEventListener("setQueryObject", handleUrlChange);
+      window.removeEventListener("urlChange", handleUrlChange);
     };
 
     // eslint-disable-next-line
@@ -43,7 +45,7 @@ const useURLQueryParams = <K extends string>(keys: K[]) => {
       setQueryObj(newQueryObj);
 
       // broadcast other hook instances to refresh state
-      window.dispatchEvent(new Event("setQueryObject"));
+      window.dispatchEvent(new Event("urlChange"));
     },
     [queryObj],
   );
