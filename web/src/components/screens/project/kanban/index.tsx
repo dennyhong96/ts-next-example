@@ -14,7 +14,7 @@ const ProjectKanbanScreen = () => {
   return (
     <div>
       <Heading>{project?.name} Kanban</Heading>
-      <Stack direction="row" overflow="hidden">
+      <Stack direction="row" overflow="hidden" spacing={4}>
         {kanbans?.map((kanban) => (
           <KanbanColumn key={kanban.id} kanban={kanban} />
         ))}

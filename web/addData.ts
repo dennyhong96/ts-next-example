@@ -62,6 +62,19 @@ export const addData = async () => {
     ),
   );
 
+  const taskTypeIds: string[] = [];
+
+  // Add task types
+  await Promise.all(
+    ["bug", "test", "feature", "chore"].map((taskType) => {
+      const taskTypeId = db.collection("taskTypes").doc().id;
+      taskTypeIds.push(taskTypeId);
+      return db.collection("taskTypes").doc(taskTypeId).set({
+        name: taskType,
+      });
+    }),
+  );
+
   // Add tasks
   await Promise.all(
     kanbansInfo.map(
@@ -77,6 +90,8 @@ export const addData = async () => {
                 kanbanId: kb.kanbanId,
                 projectId: kb.projectId,
                 note: faker.lorem.sentence(),
+                typeId: taskTypeIds[Math.ceil(Math.random() * taskTypeIds.length)],
+                processorId: userIds[Math.ceil(Math.random() * userIds.length)],
               });
           }),
         ),

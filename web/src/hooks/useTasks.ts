@@ -4,15 +4,19 @@ import { useQuery } from "react-query";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { db } from "@lib/firebase";
 import { ITask } from "@localTypes/task";
+import useTasksQueryKey from "./useTasksQueryKey";
+import useTasksSearchParams from "./useTasksSearchParams";
 
-const useTasks = ({ kanbanId, enabled = true }: { kanbanId?: string; enabled?: boolean }) => {
+const useTasks = () => {
+  const { projectId } = useTasksSearchParams();
+
   const listTasks = useCallback(async () => {
     type tasksRefType = CollectionReference<DocumentData> | Query<DocumentData>;
 
     let tasksRef: tasksRefType = db.collection("tasks");
 
-    if (kanbanId) {
-      tasksRef = tasksRef.where("kanbanId", "==", kanbanId);
+    if (projectId) {
+      tasksRef = tasksRef.where("projectId", "==", projectId);
     }
 
     const snapshots = await tasksRef.get();
@@ -25,11 +29,9 @@ const useTasks = ({ kanbanId, enabled = true }: { kanbanId?: string; enabled?: b
     });
 
     return items;
-  }, [kanbanId]);
+  }, [projectId]);
 
-  return useQuery<ITask[], Error>(["tasks", { kanbanId }], () => listTasks(), {
-    enabled,
-  });
+  return useQuery<ITask[], Error>(["tasks", useTasksQueryKey()], () => listTasks());
 };
 
 export default useTasks;
