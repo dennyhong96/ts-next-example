@@ -1,13 +1,11 @@
+import { ReactNode } from "react";
 import { Divider, Heading, Stack, Box, Text } from "@chakra-ui/react";
 
 import { IKanban } from "@localTypes/kanban";
 import useTasks from "@hooks/useTasks";
 import useTaskTypes from "@hooks/useTaskTypes";
 
-const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
-  const { data: taskTypes } = useTaskTypes();
-  const { data: tasks } = useTasks();
-
+export const ColumnContainer = ({ children }: { children: ReactNode }) => {
   return (
     <Stack
       minWidth="20rem"
@@ -18,6 +16,17 @@ const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
       paddingLeft={4}
       paddingRight={4}
     >
+      {children}
+    </Stack>
+  );
+};
+
+const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
+  const { data: taskTypes } = useTaskTypes();
+  const { data: tasks } = useTasks();
+
+  return (
+    <ColumnContainer>
       <Heading size="md">{kanban.name}</Heading>
 
       <Box paddingTop={2} paddingBottom={2}>
@@ -46,7 +55,7 @@ const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
             ) : null;
           })}
       </Stack>
-    </Stack>
+    </ColumnContainer>
   );
 };
 

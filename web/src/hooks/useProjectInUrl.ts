@@ -7,9 +7,10 @@ export const useProjectIdInUrl = () => {
 };
 
 const useProjectInUrl = () => {
-  const { data: project } = useProject(useProjectIdInUrl());
+  const { data: project, ...asyncRes } = useProject(useProjectIdInUrl());
   return {
     project,
+    ...asyncRes,
   };
 };
 
