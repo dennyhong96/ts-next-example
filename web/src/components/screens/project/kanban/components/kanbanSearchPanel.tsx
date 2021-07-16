@@ -28,7 +28,7 @@ const KanbanSearchPanel = () => {
 
       <Box minWidth="200px">
         <TaskTypesSelect
-          defaultOptionName="Task types"
+          defaultOptionName="Task type"
           taskTypeId={searchParams.typeId || ""}
           onChange={(newTaskTypeId) => setSearchParams({ ...searchParams, typeId: newTaskTypeId })}
         />

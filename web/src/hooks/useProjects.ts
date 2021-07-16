@@ -4,7 +4,6 @@ import { useQuery } from "react-query";
 import { db } from "@lib/firebase";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { IProject } from "@localTypes/projects";
-import useProjectsQueryKey from "./useProjectsQueryKey";
 
 const useProjects = (param?: Partial<IProject>) => {
   const listProjects = useCallback(async () => {
@@ -33,7 +32,7 @@ const useProjects = (param?: Partial<IProject>) => {
     return items;
   }, [param]);
 
-  return useQuery<IProject[], Error>(useProjectsQueryKey(), () => listProjects());
+  return useQuery<IProject[], Error>(["projects", param], () => listProjects());
 };
 
 export default useProjects;

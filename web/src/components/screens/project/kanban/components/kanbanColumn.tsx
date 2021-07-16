@@ -6,6 +6,8 @@ import useTasks from "@hooks/useTasks";
 import useTaskTypes from "@hooks/useTaskTypes";
 import CreateTask from "./createTask";
 import useTaskModal from "@hooks/useTaskModal";
+import MarkKeyword from "@components/mark";
+import useTasksSearchParams from "@hooks/useTasksSearchParams";
 
 export const ColumnContainer = ({ children }: { children: ReactNode }) => {
   return (
@@ -49,6 +51,7 @@ export const TaskContainer = ({
 };
 
 const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
+  const [params] = useTasksSearchParams();
   const { data: taskTypes } = useTaskTypes();
   const { data: tasks } = useTasks();
   const { open } = useTaskModal();
@@ -80,7 +83,7 @@ const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
             const taskType = taskTypes?.find((tt) => tt.id === task.typeId)?.name;
             return taskType ? (
               <TaskContainer key={task.id} onClick={() => open(task.id)}>
-                <Text>{task.name}</Text>
+                <MarkKeyword name={task.name} keyword={params.name ?? ""} />
                 <Box height={4} width={4}>
                   <img src={`/assets/icons/${taskType}.svg`} alt={taskType} />
                 </Box>

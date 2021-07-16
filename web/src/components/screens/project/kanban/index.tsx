@@ -1,9 +1,8 @@
 import { Fragment } from "react";
-import { Heading, Stack, Box } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 
 import useKanbans from "@hooks/useKanbans";
 import useProjectInUrl from "@hooks/useProjectInUrl";
-import useTasks from "@hooks/useTasks";
 import FullPageLoading from "@components/fullPageLoading";
 import KanbanColumn from "./components/kanbanColumn";
 import KanbanSearchPanel from "./components/kanbanSearchPanel";
@@ -12,8 +11,7 @@ import CreateKanban from "./components/createKanban";
 const ProjectKanbanScreen = () => {
   const { project, isLoading: projectLoading } = useProjectInUrl();
   const { data: kanbans, isLoading: kanbansLoading } = useKanbans();
-  const { isLoading: tasksLoading } = useTasks();
-  const isLoading = projectLoading || kanbansLoading || tasksLoading;
+  const isLoading = projectLoading || kanbansLoading;
 
   return (
     <Stack padding={4} spacing={4} height="100%">
@@ -21,7 +19,7 @@ const ProjectKanbanScreen = () => {
         <FullPageLoading />
       ) : (
         <Fragment>
-          <Heading>{project?.name} Kanban</Heading>
+          <Heading>Kanban - {project?.name}</Heading>
           <KanbanSearchPanel />
           <Stack
             flex="1"

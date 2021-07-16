@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 
 import useTaskModal from "@hooks/useTaskModal";
@@ -36,6 +37,7 @@ const TaskModal = () => {
   const { close, isLoading, taskModalOpen, editingTask } = useTaskModal();
   const { mutateAsync: editTask } = useEditTask(useTasksQueryKey());
   const [form, setForm] = useState(INITIAL_FORM_STATE);
+  const toast = useToast();
 
   useEffect(() => {
     if (!editingTask) return;
@@ -51,7 +53,21 @@ const TaskModal = () => {
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
-    await editTask(form);
+    if (!editingTask) return;
+    if (!form.name || !form.processorId || !form.typeId) {
+      return toast({
+        title: "Missing task info",
+        description: "Please enter a name for the task, choose a task type, and a processor.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+    await editTask({
+      ...form,
+      id: editingTask.id,
+    });
     handleClose();
   };
 
