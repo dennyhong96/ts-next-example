@@ -16,14 +16,21 @@ const ProjectKanbanScreen = () => {
   const isLoading = projectLoading || kanbansLoading || tasksLoading;
 
   return (
-    <Box padding={4}>
+    <Stack padding={4} spacing={4} height="100%">
       {isLoading ? (
         <FullPageLoading />
       ) : (
         <Fragment>
           <Heading>{project?.name} Kanban</Heading>
           <KanbanSearchPanel />
-          <Stack direction="row" overflow="hidden" width="100%" spacing={4} overflowX="auto">
+          <Stack
+            flex="1"
+            direction="row"
+            overflow="hidden"
+            width="100%"
+            spacing={4}
+            overflowX="auto"
+          >
             {kanbans?.map((kanban) => (
               <KanbanColumn key={kanban.id} kanban={kanban} />
             ))}
@@ -32,7 +39,7 @@ const ProjectKanbanScreen = () => {
           </Stack>
         </Fragment>
       )}
-    </Box>
+    </Stack>
   );
 };
 

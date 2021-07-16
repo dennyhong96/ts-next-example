@@ -53,8 +53,10 @@ const Header = () => {
       justifyContent="space-between"
       backgroundColor="white"
       alignItems="center"
-      padding={4}
+      paddingLeft={4}
+      paddingRight={4}
       boxShadow="0 0 5px 0 rgba(0, 0, 0, 0.1)"
+      height="100%"
     >
       <Stack direction="row" alignItems="center">
         <NextLink href="/" passHref>

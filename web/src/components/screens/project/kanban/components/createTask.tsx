@@ -45,6 +45,7 @@ const CreateTask = ({ kanbanId }: { kanbanId: string }) => {
       kanbanId,
       typeId: taskTypeId,
     });
+
     setNewTaskName("");
     setProcessorId("");
     setTaskTypeId("");
