@@ -6,7 +6,7 @@ import useTasks from "@hooks/useTasks";
 import useTaskTypes from "@hooks/useTaskTypes";
 import CreateTask from "./createTask";
 import useTaskModal from "@hooks/useTaskModal";
-import MarkKeyword from "@components/mark";
+import MarkKeyword from "@components/markKeyword";
 import useTasksSearchParams from "@hooks/useTasksSearchParams";
 
 export const ColumnContainer = ({ children }: { children: ReactNode }) => {

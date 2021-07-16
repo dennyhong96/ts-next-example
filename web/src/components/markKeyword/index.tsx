@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, LegacyRef } from "react";
 import Mark, { default as _Mark } from "mark.js";
-
 import { Text } from "@chakra-ui/react";
 
 const MarkKeyword = ({ name, keyword }: { name: string; keyword: string }) => {

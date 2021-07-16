@@ -6,9 +6,9 @@ import { UserCredential } from "@firebase/auth-types";
 import { auth, db } from "@lib/firebase";
 import useAsync from "@hooks/useAsync";
 import useMount from "@hooks/useMount";
-import { IUser } from "@components/screens/projects";
 import FullPageLoading from "@components/fullPageLoading";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
+import { IUser } from "@localTypes/user";
 
 interface IAuthForm {
   email: string;

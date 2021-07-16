@@ -41,6 +41,8 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
   const { mutate: editProject, error: editError } = useEditProject(useProjectsQueryKey());
   const { mutate: addProject, error: addError } = useAddProjects(useProjectsQueryKey());
 
+  console.log({ projectModalOpen });
+
   useEffect(() => {
     if (!projectModalOpen || !editingProject) return;
     setForm({
@@ -84,7 +86,7 @@ const ProjectModal = (props: { returnFocusRef?: RefObject<HTMLElement> }) => {
 
   return (
     <Drawer
-      size="full"
+      size="md"
       isOpen={projectModalOpen}
       placement="right"
       onClose={handleClose}

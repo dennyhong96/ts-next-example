@@ -16,21 +16,11 @@ const useTasks = () => {
 
     let tasksRef: tasksRefType = db.collection("tasks");
 
-    if (params.projectId) {
-      tasksRef = tasksRef.where("projectId", "==", params.projectId);
-    }
-
-    if (params.typeId) {
-      tasksRef = tasksRef.where("typeId", "==", params.typeId);
-    }
-
-    if (params.processorId) {
-      tasksRef = tasksRef.where("processorId", "==", params.processorId);
-    }
-
-    if (params.name) {
-      tasksRef = tasksRef.where("name", "==", params.name);
-    }
+    (Object.keys(params) as (keyof typeof params)[]).forEach((key) => {
+      if (params[key]) {
+        tasksRef = tasksRef.where(key, "==", params[key]);
+      }
+    });
 
     const snapshots = await tasksRef.get();
 

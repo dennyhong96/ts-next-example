@@ -13,12 +13,12 @@ const useProjects = (param?: Partial<IProject>) => {
 
     let projectsRef: projectRefType = db.collection("projects");
 
-    if (param?.personId) {
-      projectsRef = projectsRef.where("personId", "==", param.personId);
-    }
-
-    if (param?.name) {
-      projectsRef = projectsRef.where("name", "==", param.name);
+    if (param) {
+      (Object.keys(param) as (keyof typeof param)[]).forEach((key) => {
+        if (param[key]) {
+          projectsRef = projectsRef.where(key, "==", param[key]);
+        }
+      });
     }
 
     const snapshots = await projectsRef.get();
