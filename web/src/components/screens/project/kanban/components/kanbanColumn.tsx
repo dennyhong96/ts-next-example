@@ -5,6 +5,7 @@ import { IKanban } from "@localTypes/kanban";
 import useTasks from "@hooks/useTasks";
 import useTaskTypes from "@hooks/useTaskTypes";
 import CreateTask from "./createTask";
+import useTaskModal from "@hooks/useTaskModal";
 
 export const ColumnContainer = ({ children }: { children: ReactNode }) => {
   return (
@@ -25,18 +26,22 @@ export const ColumnContainer = ({ children }: { children: ReactNode }) => {
 export const TaskContainer = ({
   children,
   containerRef,
+  onClick = () => {}, // eslint-disable-line
 }: {
   children: ReactNode;
   containerRef?: MutableRefObject<HTMLElement | undefined>;
+  onClick?: () => void;
 }) => {
   return (
     <Stack
+      onClick={onClick}
       ref={containerRef as LegacyRef<HTMLDivElement> | undefined}
       direction="row"
       align="center"
       background="white"
       padding={4}
       borderRadius={4}
+      cursor="pointer"
     >
       {children}
     </Stack>
@@ -46,6 +51,7 @@ export const TaskContainer = ({
 const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
   const { data: taskTypes } = useTaskTypes();
   const { data: tasks } = useTasks();
+  const { open } = useTaskModal();
 
   return (
     <ColumnContainer>
@@ -73,7 +79,7 @@ const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
           .map((task) => {
             const taskType = taskTypes?.find((tt) => tt.id === task.typeId)?.name;
             return taskType ? (
-              <TaskContainer key={task.id}>
+              <TaskContainer key={task.id} onClick={() => open(task.id)}>
                 <Text>{task.name}</Text>
                 <Box height={4} width={4}>
                   <img src={`/assets/icons/${taskType}.svg`} alt={taskType} />

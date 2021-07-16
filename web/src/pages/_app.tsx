@@ -10,6 +10,7 @@ import theme from "@styles/theme";
 import { ErrorBoundary } from "@components/errorBoundary";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
 import ProjectModal from "@components/screens/projects/components/projectModal";
+import TaskModal from "@components/taskModal";
 
 // import { addData } from "addData";
 // addData();
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
                   <Component {...pageProps} />
                 </Box>
                 <ProjectModal />
+                <TaskModal />
               </SubLayout>
             </Layout>
             <ReactQueryDevtools initialIsOpen={false} />
