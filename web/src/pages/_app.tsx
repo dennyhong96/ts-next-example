@@ -27,6 +27,14 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   const Layout = Component.Layout ?? (({ children }) => children);
   const SubLayout = Component.SubLayout ?? (({ children }) => children);
 
+  // if (typeof window !== "undefined") {
+  //   const pushState = window.history.pushState;
+  //   window.history.pushState = function (state) {
+  //     window.dispatchEvent(new Event("pushstate"));
+  //     return pushState.apply(history, arguments);
+  //   };
+  // }
+
   return (
     <ChakraProvider theme={theme}>
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>

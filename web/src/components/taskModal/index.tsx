@@ -14,14 +14,18 @@ import {
   FormLabel,
   Stack,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 
 import useTaskModal from "@hooks/useTaskModal";
 import useEditTask from "@hooks/useEditTask";
 import useTasksQueryKey from "@hooks/useTasksQueryKey";
+import useDeleteTasks from "@hooks/useDeleteTasks";
 import FullPageLoading from "@components/fullPageLoading";
 import TaskTypesSelect from "@components/taskTypesSelect";
 import UserSelect from "@components/userSelect";
+import _Modal from "@components/modal";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -37,6 +41,8 @@ const TaskModal = () => {
   const { close, isLoading, taskModalOpen, editingTask } = useTaskModal();
   const { mutateAsync: editTask } = useEditTask(useTasksQueryKey());
   const [form, setForm] = useState(INITIAL_FORM_STATE);
+  const { mutateAsync: deleteTask } = useDeleteTasks(useTasksQueryKey());
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -49,6 +55,13 @@ const TaskModal = () => {
   const handleClose = () => {
     close();
     setForm(INITIAL_FORM_STATE);
+  };
+
+  const handleRemoveTask = async () => {
+    if (!editingTask) return;
+    await deleteTask(editingTask.id);
+    setIsDeleteModalOpen(false);
+    handleClose();
   };
 
   const handleSubmit = async (evt: FormEvent) => {
@@ -120,6 +133,24 @@ const TaskModal = () => {
                     onChange={(evt) => setForm((prev) => ({ ...prev, note: evt.target.value }))}
                   />
                 </FormControl>
+
+                <Button
+                  leftIcon={<DeleteIcon />}
+                  colorScheme="red"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                >
+                  Delete Task
+                </Button>
+
+                <_Modal
+                  title="Delete Task"
+                  isOpen={isDeleteModalOpen}
+                  onConfirm={handleRemoveTask}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  confirmLabel="Delete"
+                >
+                  <Text>Are you sure you want to delete Kanban: {editingTask?.name}?</Text>
+                </_Modal>
               </Stack>
             </ModalBody>
 

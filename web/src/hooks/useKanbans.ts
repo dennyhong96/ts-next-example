@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { db } from "@lib/firebase";
 import { IKanban } from "@localTypes/kanban";
-import useKanbanQueryKey from "./useKanbanQueryKey";
+import useKanbansQueryKey from "./useKanbansQueryKey";
 import useKanbansSearchParams from "./useKanbansSearchParams";
 
 const useKanbans = () => {
@@ -31,7 +31,7 @@ const useKanbans = () => {
     return items;
   }, [projectId]);
 
-  return useQuery<IKanban[], Error>(useKanbanQueryKey(), () => listKanbans());
+  return useQuery<IKanban[], Error>(useKanbansQueryKey(), () => listKanbans());
 };
 
 export default useKanbans;

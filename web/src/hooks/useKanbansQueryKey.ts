@@ -1,7 +1,7 @@
 import useKanbansSearchParams from "./useKanbansSearchParams";
 
-const useKanbanQueryKey = () => {
+const useKanbansQueryKey = () => {
   return ["kanbans", useKanbansSearchParams()];
 };
 
-export default useKanbanQueryKey;
+export default useKanbansQueryKey;
