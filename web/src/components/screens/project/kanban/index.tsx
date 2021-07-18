@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 
 import useKanbans from "@hooks/useKanbans";
@@ -7,6 +6,8 @@ import FullPageLoading from "@components/fullPageLoading";
 import KanbanColumn from "./components/kanbanColumn";
 import KanbanSearchPanel from "./components/kanbanSearchPanel";
 import CreateKanban from "./components/createKanban";
+import { DragDropContext } from "react-beautiful-dnd";
+import { Drag, Drop, DropChild } from "@components/dragAndDrop";
 
 const ProjectKanbanScreen = () => {
   const { project, isLoading: projectLoading } = useProjectInUrl();
@@ -14,30 +15,37 @@ const ProjectKanbanScreen = () => {
   const isLoading = projectLoading || kanbansLoading;
 
   return (
-    <Stack padding={4} spacing={4} height="100%">
-      {isLoading ? (
-        <FullPageLoading />
-      ) : (
-        <Fragment>
-          <Heading>Kanban - {project?.name}</Heading>
-          <KanbanSearchPanel />
-          <Stack
-            flex="1"
-            direction="row"
-            overflow="hidden"
-            width="100%"
-            spacing={4}
-            overflowX="auto"
-          >
-            {kanbans?.map((kanban) => (
-              <KanbanColumn key={kanban.id} kanban={kanban} />
-            ))}
+    // TODO: Persist dnd
+    <DragDropContext onDragEnd={() => null}>
+      <Stack padding={4} spacing={4} height="100%">
+        {isLoading ? (
+          <FullPageLoading />
+        ) : (
+          <Drop type="COLUMN" direction="horizontal" droppableId="kanban">
+            <DropChild>
+              <Heading>Kanban - {project?.name}</Heading>
+              <KanbanSearchPanel />
+              <Stack
+                flex="1"
+                direction="row"
+                overflow="hidden"
+                width="100%"
+                spacing={4}
+                overflowX="auto"
+              >
+                {kanbans?.map((kanban, index) => (
+                  <Drag key={kanban.id} draggableId={`kanban-${kanban.id}`} index={index}>
+                    <KanbanColumn kanban={kanban} />
+                  </Drag>
+                ))}
 
-            <CreateKanban />
-          </Stack>
-        </Fragment>
-      )}
-    </Stack>
+                <CreateKanban />
+              </Stack>
+            </DropChild>
+          </Drop>
+        )}
+      </Stack>
+    </DragDropContext>
   );
 };
 

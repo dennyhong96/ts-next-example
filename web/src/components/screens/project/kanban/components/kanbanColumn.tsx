@@ -1,4 +1,4 @@
-import { LegacyRef, MutableRefObject, ReactNode, useState } from "react";
+import { LegacyRef, MutableRefObject, ReactNode, useState, forwardRef } from "react";
 import {
   Divider,
   Heading,
@@ -25,21 +25,26 @@ import MarkKeyword from "@components/markKeyword";
 import Modal from "@components/modal";
 import CreateTask from "./createTask";
 
-export const ColumnContainer = ({ children }: { children: ReactNode }) => {
-  return (
-    <Stack
-      minWidth="20rem"
-      borderRadius={6}
-      background="rgb(244,245,247)"
-      paddingTop={6}
-      paddingBottom={6}
-      paddingLeft={4}
-      paddingRight={4}
-    >
-      {children}
-    </Stack>
-  );
-};
+export const ColumnContainer = forwardRef<HTMLDivElement, { children: ReactNode }>(
+  ({ children, ...restProps }, ref) => {
+    return (
+      <Stack
+        ref={ref}
+        {...restProps}
+        minWidth="20rem"
+        borderRadius={6}
+        background="rgb(244,245,247)"
+        paddingTop={6}
+        paddingBottom={6}
+        paddingLeft={4}
+        paddingRight={4}
+      >
+        {children}
+      </Stack>
+    );
+  },
+);
+ColumnContainer.displayName = "ColumnContainer";
 
 export const TaskContainer = ({
   children,
@@ -112,43 +117,46 @@ const KanbanMoreMenu = ({ kanban }: { kanban: IKanban }) => {
   );
 };
 
-const KanbanColumn = ({ kanban }: { kanban: IKanban }) => {
-  const { data: tasks } = useTasks();
+const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
+  ({ kanban, ...restProps }, ref) => {
+    const { data: tasks } = useTasks();
 
-  return (
-    <ColumnContainer>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Heading size="md">{kanban.name}</Heading>
-        <KanbanMoreMenu kanban={kanban} />
-      </Flex>
+    return (
+      <ColumnContainer ref={ref} {...restProps}>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Heading size="md">{kanban.name}</Heading>
+          <KanbanMoreMenu kanban={kanban} />
+        </Flex>
 
-      <Box paddingTop={2} paddingBottom={2}>
-        <Divider />
-      </Box>
+        <Box paddingTop={2} paddingBottom={2}>
+          <Divider />
+        </Box>
 
-      <Stack
-        flex="1"
-        overflow="auto"
-        css={`
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          ::-webkit-scrollbar {
-            display: none;
-          }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        `}
-      >
-        {tasks
-          ?.filter((task) => task.kanbanId === kanban.id)
-          .map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
+        <Stack
+          flex="1"
+          overflow="auto"
+          css={`
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            ::-webkit-scrollbar {
+              display: none;
+            }
+            /* Hide scrollbar for IE, Edge and Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+          `}
+        >
+          {tasks
+            ?.filter((task) => task.kanbanId === kanban.id)
+            .map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
 
-        <CreateTask kanbanId={kanban.id} />
-      </Stack>
-    </ColumnContainer>
-  );
-};
+          <CreateTask kanbanId={kanban.id} />
+        </Stack>
+      </ColumnContainer>
+    );
+  },
+);
+KanbanColumn.displayName = "KanbanColumn";
 
 export default KanbanColumn;
