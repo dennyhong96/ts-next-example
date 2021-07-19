@@ -22,18 +22,13 @@ const ProjectKanbanScreen = () => {
           <FullPageLoading />
         ) : (
           <Drop type="COLUMN" direction="horizontal" droppableId="kanban">
-            <DropChild
-              css={`
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-              `}
-            >
+            {/* TODO: Support passing styles to DropChild */}
+            <DropChild>
               <Heading>Kanban - {project?.name}</Heading>
               <KanbanSearchPanel />
               <Stack
-                flex="1"
+                flex={1}
+                flexShrink={0}
                 direction="row"
                 overflow="hidden"
                 width="100%"

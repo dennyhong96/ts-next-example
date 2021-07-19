@@ -1,6 +1,4 @@
 import React, { CSSProperties, Fragment, ReactNode } from "react";
-import { Box } from "@chakra-ui/react";
-import { SerializedStyles } from "@emotion/react";
 import {
   Draggable,
   DraggableProps,
@@ -24,7 +22,6 @@ export const Drop = ({ children, ...restProps }: DropProps) => {
                 ref: provided.innerRef,
                 provided,
               })}
-              {provided.placeholder}
             </Fragment>
           );
         } else {
@@ -38,19 +35,18 @@ export const Drop = ({ children, ...restProps }: DropProps) => {
 type DropChildProps = Partial<
   {
     provided: DroppableProvided;
-    css?: string | SerializedStyles;
     style?: CSSProperties;
   } & DroppableProvidedProps
 > &
   React.HTMLAttributes<HTMLDivElement>;
 
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
-  ({ children, css = "", style = {}, ...restProps }, ref) => {
+  ({ children, style = {}, ...restProps }, ref) => {
     return (
-      <Box as="div" ref={ref} {...restProps} css={css} style={style}>
+      <div ref={ref} {...restProps} style={style}>
         {children}
         {restProps.provided?.placeholder}
-      </Box>
+      </div>
     );
   },
 );
