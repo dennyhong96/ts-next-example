@@ -1,4 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { CSSProperties, Fragment, ReactNode } from "react";
+import { Box } from "@chakra-ui/react";
+import { SerializedStyles } from "@emotion/react";
 import {
   Draggable,
   DraggableProps,
@@ -15,11 +17,16 @@ export const Drop = ({ children, ...restProps }: DropProps) => {
     <Droppable {...restProps}>
       {(provided) => {
         if (React.isValidElement(children)) {
-          return React.cloneElement(children, {
-            ...provided.droppableProps,
-            ref: provided.innerRef,
-            provided,
-          });
+          return (
+            <Fragment>
+              {React.cloneElement(children, {
+                ...provided.droppableProps,
+                ref: provided.innerRef,
+                provided,
+              })}
+              {provided.placeholder}
+            </Fragment>
+          );
         } else {
           return <div />;
         }
@@ -28,16 +35,22 @@ export const Drop = ({ children, ...restProps }: DropProps) => {
   );
 };
 
-type DropChildProps = Partial<{ provided: DroppableProvided } & DroppableProvidedProps> &
+type DropChildProps = Partial<
+  {
+    provided: DroppableProvided;
+    css?: string | SerializedStyles;
+    style?: CSSProperties;
+  } & DroppableProvidedProps
+> &
   React.HTMLAttributes<HTMLDivElement>;
 
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
-  ({ children, ...restProps }, ref) => {
+  ({ children, css = "", style = {}, ...restProps }, ref) => {
     return (
-      <div ref={ref} {...restProps}>
+      <Box as="div" ref={ref} {...restProps} css={css} style={style}>
         {children}
         {restProps.provided?.placeholder}
-      </div>
+      </Box>
     );
   },
 );

@@ -22,7 +22,14 @@ const ProjectKanbanScreen = () => {
           <FullPageLoading />
         ) : (
           <Drop type="COLUMN" direction="horizontal" droppableId="kanban">
-            <DropChild>
+            <DropChild
+              css={`
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+              `}
+            >
               <Heading>Kanban - {project?.name}</Heading>
               <KanbanSearchPanel />
               <Stack
