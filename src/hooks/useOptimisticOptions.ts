@@ -1,5 +1,10 @@
-import { IProject } from "@localTypes/projects";
 import { QueryKey, useQueryClient } from "react-query";
+
+import { IKanban } from "@localTypes/kanban";
+import { IProject } from "@localTypes/projects";
+import { IAddKanbanParams } from "./useAddKanbans";
+import { IAddTaskParams } from "./useAddTasks";
+import { ITask } from "@localTypes/task";
 
 const useOptimisticOptions = (
   queryKey: QueryKey,
@@ -33,6 +38,61 @@ export const useOptimisticEdit = (queryKey: QueryKey) =>
 
 export const useOptimisticCreate = (queryKey: QueryKey) =>
   useOptimisticOptions(queryKey, (target, old) => (old ? [...old, target] : []));
+
+// TODO: Confirm this works & no infinite loop
+export const useOptimisticAddKanban = (queryKey: QueryKey) => {
+  const client = useQueryClient();
+
+  return useOptimisticOptions(
+    queryKey,
+    // @ts-ignore
+    (target: Partial<IAddKanbanParams>, old: IKanban[] | undefined) => {
+      if (!old || !Array.isArray(old)) return old;
+
+      // Optimistic update `kanbanIdsOrder` field on project
+      client.setQueryData(
+        ["project", target.projectId],
+        (oldProject: Partial<IProject> | undefined) => {
+          if (!oldProject) return {};
+          return {
+            ...oldProject,
+            kanbanIdsOrder: [...(oldProject.kanbanIdsOrder ?? []), target.newKanbanId],
+          };
+        },
+      );
+
+      return [...old, target];
+    },
+  );
+};
+
+// TODO: Confirm this works & no infinite loop
+export const useOptimisticAddTask = (queryKey: QueryKey) => {
+  const client = useQueryClient();
+
+  return useOptimisticOptions(
+    queryKey,
+    // @ts-ignore
+    (target: Partial<IAddTaskParams>, old: ITask[] | undefined) => {
+      if (!old || !Array.isArray(old)) return old;
+
+      // Optimistic update `kanbanIdsOrder` field on project
+      client.setQueryData(
+        ["kanbans", { projectId: target.projectId }],
+        (oldKanbans: IKanban[] | undefined) => {
+          if (!oldKanbans || !Array.isArray(oldKanbans)) return [];
+          return oldKanbans.map((kb) =>
+            kb.id === target.kanbanId
+              ? { ...kb, taskIdsOrder: [...kb.taskIdsOrder, target.newTaskId as string] } // TODO: remove as
+              : { ...kb },
+          );
+        },
+      );
+
+      return [...old, target];
+    },
+  );
+};
 
 export const useOptimisticDelete = (queryKey: QueryKey) =>
   useOptimisticOptions(

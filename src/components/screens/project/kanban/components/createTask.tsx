@@ -1,13 +1,13 @@
-import { AddIcon } from "@chakra-ui/icons";
+import React, { FormEvent, RefObject, useRef, useState } from "react";
 import { Button, Input, Stack, Box, useOutsideClick, useToast } from "@chakra-ui/react";
-import TaskTypesSelect from "@components/taskTypesSelect";
-import UserSelect from "@components/userSelect";
+import { AddIcon } from "@chakra-ui/icons";
+
 import useAddTasks from "@hooks/useAddTasks";
 import { useProjectIdInUrl } from "@hooks/useProjectInUrl";
 import useTasksQueryKey from "@hooks/useTasksQueryKey";
-import React, { FormEvent, RefObject } from "react";
-import { useRef } from "react";
-import { useState } from "react";
+import TaskTypesSelect from "@components/taskTypesSelect";
+import UserSelect from "@components/userSelect";
+import generateId from "@utils/generateId";
 import { TaskContainer } from "./kanbanColumn";
 
 const CreateTask = ({ kanbanId }: { kanbanId: string }) => {
@@ -44,6 +44,7 @@ const CreateTask = ({ kanbanId }: { kanbanId: string }) => {
       projectId,
       kanbanId,
       typeId: taskTypeId,
+      newTaskId: generateId({ type: "tasks" }),
     });
 
     setNewTaskName("");

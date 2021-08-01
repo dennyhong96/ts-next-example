@@ -1,19 +1,22 @@
 import { QueryKey, useMutation } from "react-query";
 
 import { db } from "@lib/firebase";
-import { useOptimisticCreate } from "./useOptimisticOptions";
+import { useOptimisticAddKanban } from "./useOptimisticOptions";
 import { IKanban } from "@localTypes/kanban";
 import useProjectInUrl from "./useProjectInUrl";
+
+export interface IAddKanbanParams extends IKanban {
+  newKanbanId: string;
+}
 
 const useAddKanbans = (queryKey: QueryKey) => {
   const { project } = useProjectInUrl();
 
-  return useMutation(async (params: Partial<IKanban>) => {
+  return useMutation(async (params: Partial<IAddKanbanParams>) => {
     if (!project) return;
 
-    const newKanbanId = db.collection("kanbans").doc().id;
+    const { newKanbanId, ...restParams } = params;
 
-    // *** TODO: optimistic update addKanban and addTask, put new ids into order array
     return await Promise.all([
       db
         .collection("projects")
@@ -22,9 +25,9 @@ const useAddKanbans = (queryKey: QueryKey) => {
       db
         .collection("kanbans")
         .doc(newKanbanId)
-        .set({ ...params }),
+        .set({ ...restParams }),
     ]);
-  }, useOptimisticCreate(queryKey));
+  }, useOptimisticAddKanban(queryKey));
 };
 
 export default useAddKanbans;

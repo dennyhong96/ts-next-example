@@ -3,8 +3,9 @@ import { Button, Input, Stack, useToast } from "@chakra-ui/react";
 
 import useAddKanbans from "@hooks/useAddKanbans";
 import useKanbansQueryKey from "@hooks/useKanbansQueryKey";
-import { ColumnContainer } from "./kanbanColumn";
 import { useProjectIdInUrl } from "@hooks/useProjectInUrl";
+import generateId from "@utils/generateId";
+import { ColumnContainer } from "./kanbanColumn";
 
 const CreateKanban = () => {
   const [newKanbanName, setNewKanbanName] = useState("");
@@ -28,6 +29,7 @@ const CreateKanban = () => {
     await addKanban({
       projectId,
       name: newKanbanName,
+      newKanbanId: generateId({ type: "kanbans" }),
     });
 
     setNewKanbanName("");
