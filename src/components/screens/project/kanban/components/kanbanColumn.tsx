@@ -146,19 +146,21 @@ const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
             scrollbar-width: none; /* Firefox */
           `}
         >
-          <Drop droppableId={`tasks-${kanban.id}`}>
+          <Drop type="ROW" droppableId={kanban.id}>
             <DropChild>
               <Stack>
-                {tasks
-                  ?.filter((task) => task.kanbanId === kanban.id)
-                  .map((task, idx) => (
-                    <Drag key={task.id} index={idx} draggableId={`task-${task.id}`}>
-                      {/* Needs a ref here for Drag to work, either use a native html tag, or forward ref in TaskCard */}
-                      <div>
-                        <TaskCard task={task} />
-                      </div>
-                    </Drag>
-                  ))}
+                {(
+                  kanban.taskIdsOrder
+                    .map((taskId) => tasks?.find((t) => t.id === taskId))
+                    .filter(Boolean) as ITask[]
+                ).map((task, idx) => (
+                  <Drag key={task.id} index={idx} draggableId={task.id}>
+                    {/* Needs a ref here for Drag to work, either use a native html tag, or forward ref in TaskCard */}
+                    <div>
+                      <TaskCard task={task} />
+                    </div>
+                  </Drag>
+                ))}
               </Stack>
             </DropChild>
           </Drop>

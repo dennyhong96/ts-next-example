@@ -8,15 +8,19 @@ import KanbanColumn from "./components/kanbanColumn";
 import KanbanSearchPanel from "./components/kanbanSearchPanel";
 import CreateKanban from "./components/createKanban";
 import { Drag, Drop, DropChild } from "@components/dragAndDrop";
+import useDragEnd from "@hooks/useDragEnd";
+
+import { IKanban } from "@localTypes/kanban";
 
 const ProjectKanbanScreen = () => {
   const { project, isLoading: projectLoading } = useProjectInUrl();
   const { data: kanbans, isLoading: kanbansLoading } = useKanbans();
   const isLoading = projectLoading || kanbansLoading;
 
+  const handleDragEnd = useDragEnd();
+
   return (
-    // TODO: Persist dnd
-    <DragDropContext onDragEnd={() => null}>
+    <DragDropContext onDragEnd={handleDragEnd}>
       <Box height="100%" display="flex" flexDirection="column">
         <Stack padding={4} spacing={4}>
           <Heading>Kanban - {project?.name}</Heading>
@@ -30,7 +34,12 @@ const ProjectKanbanScreen = () => {
               {/* TODO: Support passing styles to DropChild */}
               <DropChild style={{ height: "100%", display: "flex" }}>
                 <Stack flex={1} direction="row">
-                  {kanbans?.map((kanban, index) => (
+                  {(
+                    project?.kanbanIdsOrder
+                      // TODO: Abstrat into useOrderedKanbans hook?
+                      ?.map((kanbanId) => kanbans?.find((kb) => kb.id === kanbanId))
+                      ?.filter((kb) => !!kb) as IKanban[]
+                  )?.map((kanban, index) => (
                     <Drag key={kanban.id} draggableId={`kanban-${kanban.id}`} index={index}>
                       <KanbanColumn kanban={kanban} />
                     </Drag>

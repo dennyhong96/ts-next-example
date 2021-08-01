@@ -24,10 +24,6 @@ const ProjectsScreen = () => {
   const { users } = useUsers();
   const { data: projects, isLoading, error } = useProjects(debouncedParam);
 
-  // console.log({ param });
-  // console.log({ projects });
-  // console.log({ users });
-
   return (
     <Box padding={4}>
       <Flex justifyContent="space-between">

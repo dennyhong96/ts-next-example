@@ -1,4 +1,4 @@
-import "@utils/wdyr";
+// import "@utils/wdyr";
 import { ChakraProvider, Box } from "@chakra-ui/react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";

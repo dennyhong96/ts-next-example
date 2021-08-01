@@ -29,8 +29,6 @@ export const addData = async () => {
     }),
   );
 
-  console.log({ taskTypeIds });
-
   // Add projects
   await Promise.all(
     userIds.map(
