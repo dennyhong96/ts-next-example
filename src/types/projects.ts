@@ -5,4 +5,5 @@ export interface IProject {
   personId: string;
   created: string;
   pin?: boolean;
+  kanbanIdsOrder: string[];
 }
