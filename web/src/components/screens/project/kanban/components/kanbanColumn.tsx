@@ -23,6 +23,7 @@ import useKanbansQueryKey from "@hooks/useKanbansQueryKey";
 import useTasksSearchParams from "@hooks/useTasksSearchParams";
 import MarkKeyword from "@components/markKeyword";
 import Modal from "@components/modal";
+import { Drag, Drop, DropChild } from "@components/dragAndDrop";
 import CreateTask from "./createTask";
 
 export const ColumnContainer = forwardRef<HTMLDivElement, { children: ReactNode }>(
@@ -145,11 +146,22 @@ const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
             scrollbar-width: none; /* Firefox */
           `}
         >
-          {tasks
-            ?.filter((task) => task.kanbanId === kanban.id)
-            .map((task) => (
-              <TaskCard key={task.id} task={task} />
-            ))}
+          <Drop droppableId={`tasks-${kanban.id}`}>
+            <DropChild>
+              <Stack>
+                {tasks
+                  ?.filter((task) => task.kanbanId === kanban.id)
+                  .map((task, idx) => (
+                    <Drag key={task.id} index={idx} draggableId={`task-${task.id}`}>
+                      {/* Needs a ref here for Drag to work, either use a native html tag, or forward ref in TaskCard */}
+                      <div>
+                        <TaskCard task={task} />
+                      </div>
+                    </Drag>
+                  ))}
+              </Stack>
+            </DropChild>
+          </Drop>
 
           <CreateTask kanbanId={kanban.id} />
         </Stack>
