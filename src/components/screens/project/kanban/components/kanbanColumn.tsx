@@ -151,9 +151,9 @@ const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
               <Stack>
                 {(
                   kanban.taskIdsOrder
-                    .map((taskId) => tasks?.find((t) => t.id === taskId))
+                    ?.map((taskId) => tasks?.find((t) => t.id === taskId))
                     .filter(Boolean) as ITask[]
-                ).map((task, idx) => (
+                )?.map((task, idx) => (
                   <Drag key={task.id} index={idx} draggableId={task.id}>
                     {/* Needs a ref here for Drag to work, either use a native html tag, or forward ref in TaskCard */}
                     <div>
