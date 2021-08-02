@@ -10,6 +10,8 @@ const Home: FC = () => {
   const { replace } = useRouter();
   useEffect(() => {
     replace("/projects");
+
+    // eslint-disable-next-line
   }, []);
 
   return (

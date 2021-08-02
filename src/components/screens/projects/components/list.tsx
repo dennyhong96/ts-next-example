@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState } from "react";
 import NextLink from "next/link";
 import {
   Table,
@@ -27,7 +27,6 @@ import useEditProject from "@hooks/useEditProject";
 import useProjectModal from "@hooks/useProjectModal";
 import useProjectsQueryKey from "@hooks/useProjectsQueryKey";
 import useDeleteProjects from "@hooks/useDeleteProjects";
-import { useState } from "react";
 import Modal from "@components/modal";
 import { IUser } from "@localTypes/user";
 
