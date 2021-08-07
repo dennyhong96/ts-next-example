@@ -23,7 +23,7 @@ const useAddTasks = (queryKey: QueryKey) => {
       db
         .collection("kanbans")
         .doc(restParams.kanbanId)
-        .set({ taskIdsOrder: [...kanban.taskIdsOrder, newTaskId] }, { merge: true }),
+        .set({ taskIdsOrder: [...(kanban.taskIdsOrder ?? []), newTaskId] }, { merge: true }),
       db
         .collection("tasks")
         .doc(newTaskId)

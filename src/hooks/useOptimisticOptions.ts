@@ -22,7 +22,7 @@ const useOptimisticOptions = (
     },
     onError(error: any, newItem: any, context: any) {
       console.error(error);
-      client.setQueryData(queryKey, () => context.previousItems);
+      client.setQueryData(queryKey, () => context?.previousItems);
     },
   };
 };
@@ -81,11 +81,12 @@ export const useOptimisticAddTask = (queryKey: QueryKey) => {
         ["kanbans", { projectId: target.projectId }],
         (oldKanbans: IKanban[] | undefined) => {
           if (!oldKanbans || !Array.isArray(oldKanbans)) return [];
-          return oldKanbans.map((kb) =>
-            kb.id === target.kanbanId
-              ? { ...kb, taskIdsOrder: [...kb.taskIdsOrder, target.newTaskId as string] } // TODO: remove as
-              : { ...kb },
-          );
+          return oldKanbans.map((kb) => {
+            console.log({ kb });
+            return kb.id === target.kanbanId
+              ? { ...kb, taskIdsOrder: [...(kb.taskIdsOrder ?? []), target.newTaskId as string] } // TODO: remove as
+              : { ...kb };
+          });
         },
       );
 

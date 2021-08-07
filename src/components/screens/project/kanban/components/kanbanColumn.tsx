@@ -148,7 +148,7 @@ const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
         >
           <Drop type="ROW" droppableId={kanban.id}>
             <DropChild>
-              <Stack>
+              <Stack minHeight={4}>
                 {(
                   kanban.taskIdsOrder
                     ?.map((taskId) => tasks?.find((t) => t.id === taskId))
