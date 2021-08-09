@@ -11,6 +11,7 @@ import { ErrorBoundary } from "@components/errorBoundary";
 import FullPageErrorFallback from "@components/fullPageErrorFallback";
 import ProjectModal from "@components/screens/projects/components/projectModal";
 import TaskModal from "@components/taskModal";
+import Profiler from "@components/profiler";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -40,24 +41,26 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   // }
 
   return (
-    <ChakraProvider theme={theme}>
-      <ErrorBoundary fallbackRender={FullPageErrorFallback}>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <Layout>
-              <SubLayout>
-                <Box as="main" id="main" width="100%" height="100%">
-                  <Component {...pageProps} />
-                </Box>
-                <ProjectModal />
-                <TaskModal />
-              </SubLayout>
-            </Layout>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </AuthProvider>
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </ChakraProvider>
+    <Profiler id="_app.tsx" targetPhases={["mount"]}>
+      <ChakraProvider theme={theme}>
+        <ErrorBoundary fallbackRender={FullPageErrorFallback}>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <Layout>
+                <SubLayout>
+                  <Box as="main" id="main" width="100%" height="100%">
+                    <Component {...pageProps} />
+                  </Box>
+                  <ProjectModal />
+                  <TaskModal />
+                </SubLayout>
+              </Layout>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </AuthProvider>
+          </QueryClientProvider>
+        </ErrorBoundary>
+      </ChakraProvider>
+    </Profiler>
   );
 }
 
