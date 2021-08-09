@@ -1,4 +1,4 @@
-import { FormEvent, Fragment, RefObject, useState } from "react";
+import { FormEvent, Fragment, RefObject, useState, useEffect } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -20,7 +20,6 @@ import {
 import { HashLoader } from "react-spinners";
 
 import useProjectModal from "@hooks/useProjectModal";
-import { useEffect } from "react";
 import UserSelect from "@components/userSelect";
 import useEditProject from "@hooks/useEditProject";
 import useAddProjects from "@hooks/useAddProjects";

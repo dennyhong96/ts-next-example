@@ -12,6 +12,9 @@ import FullPageErrorFallback from "@components/fullPageErrorFallback";
 import ProjectModal from "@components/screens/projects/components/projectModal";
 import TaskModal from "@components/taskModal";
 
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+
 // import { addData } from "addData";
 // addData();
 

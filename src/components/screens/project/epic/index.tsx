@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Box, Flex, Heading, Stack, IconButton, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack, IconButton, Link, Text, Button } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import useProjectInUrl from "@hooks/useProjectInUrl";
 import useEpics from "@hooks/useEpics";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import Modal from "@components/modal";
 import useDeleteEpics from "@hooks/useDeleteEpics";
 import useEpicsQueryKey from "@hooks/useEpicsQueryKey";
+import CreateEpicDrawer from "./components/createEpic";
 
 const ProjectEpicScreen = () => {
   const [deleteModalOpenEpicId, setDeleteModalOpenEpicId] = useState("");
@@ -16,6 +17,8 @@ const ProjectEpicScreen = () => {
   const { data: epics } = useEpics();
   const { data: tasks } = useTasks({ projectId: project?.id });
   const { mutateAsync: deleteEpic } = useDeleteEpics(useEpicsQueryKey());
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleDeleteModalClose = () => {
     setDeleteModalOpenEpicId("");
@@ -32,6 +35,11 @@ const ProjectEpicScreen = () => {
   return (
     <Box p={4}>
       <Heading>Epic - {project?.name}</Heading>
+
+      <Button colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
+        Create Epic
+      </Button>
+      <CreateEpicDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <Stack>
         {epics?.map((epic) => (
