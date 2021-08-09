@@ -4,13 +4,9 @@ import { useQuery } from "react-query";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { db } from "@lib/firebase";
 import { ITask } from "@localTypes/task";
-import useTasksQueryKey from "./useTasksQueryKey";
-import useTasksSearchParams from "./useTasksSearchParams";
 
 // TODO: debounce task name param
-const useTasks = () => {
-  const [params] = useTasksSearchParams();
-
+const useTasks = (params: Partial<ITask>) => {
   const listTasks = useCallback(async () => {
     type tasksRefType = CollectionReference<DocumentData> | Query<DocumentData>;
 
@@ -34,7 +30,7 @@ const useTasks = () => {
     return items;
   }, [params]);
 
-  return useQuery<ITask[], Error>(useTasksQueryKey(), () => listTasks());
+  return useQuery<ITask[], Error>(["tasks", params], () => listTasks());
 };
 
 export default useTasks;

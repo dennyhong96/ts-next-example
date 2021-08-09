@@ -25,6 +25,7 @@ import MarkKeyword from "@components/markKeyword";
 import Modal from "@components/modal";
 import { Drag, Drop, DropChild } from "@components/dragAndDrop";
 import CreateTask from "./createTask";
+import useTask from "@hooks/useTask";
 
 export const ColumnContainer = forwardRef<HTMLDivElement, { children: ReactNode }>(
   ({ children, ...restProps }, ref) => {
@@ -120,7 +121,8 @@ const KanbanMoreMenu = ({ kanban }: { kanban: IKanban }) => {
 
 const KanbanColumn = forwardRef<HTMLDivElement, { kanban: IKanban }>(
   ({ kanban, ...restProps }, ref) => {
-    const { data: tasks } = useTasks();
+    const [params] = useTasksSearchParams();
+    const { data: tasks } = useTasks(params);
 
     return (
       <ColumnContainer ref={ref} {...restProps}>

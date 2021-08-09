@@ -1,3 +1,4 @@
+import { ITask } from "@localTypes/task";
 import { useMemo } from "react";
 
 import { useProjectIdInUrl } from "./useProjectInUrl";
@@ -8,7 +9,7 @@ const useTasksSearchParams = () => {
   const projectId = useProjectIdInUrl();
 
   return [
-    useMemo(
+    useMemo<Partial<ITask>>(
       () => ({
         projectId,
         typeId: params.typeId as string | undefined,
