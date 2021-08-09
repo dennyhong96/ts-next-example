@@ -26,6 +26,7 @@ import TaskTypesSelect from "@components/taskTypesSelect";
 import UserSelect from "@components/userSelect";
 import _Modal from "@components/modal";
 import { DeleteIcon } from "@chakra-ui/icons";
+import EpicSelect from "@components/epicSelect";
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -122,6 +123,15 @@ const TaskModal = () => {
                     onChange={(newProcessorId) =>
                       setForm((prev) => ({ ...prev, processorId: newProcessorId }))
                     }
+                  />
+                </FormControl>
+
+                <FormControl id="epic">
+                  <FormLabel>Epic</FormLabel>
+                  <EpicSelect
+                    defaultOptionName="Select an Epic"
+                    epicId={form.epicId}
+                    onChange={(newEpicId) => setForm((prev) => ({ ...prev, epicId: newEpicId }))}
                   />
                 </FormControl>
 

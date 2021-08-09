@@ -14,7 +14,7 @@ import CreateEpicDrawer from "./components/createEpic";
 const ProjectEpicScreen = () => {
   const [deleteModalOpenEpicId, setDeleteModalOpenEpicId] = useState("");
   const { project } = useProjectInUrl();
-  const { data: epics } = useEpics();
+  const { data: epics } = useEpics(useEpicsQueryKey());
   const { data: tasks } = useTasks({ projectId: project?.id });
   const { mutateAsync: deleteEpic } = useDeleteEpics(useEpicsQueryKey());
 
@@ -29,8 +29,6 @@ const ProjectEpicScreen = () => {
     handleDeleteModalClose();
   };
 
-  console.log({ epics });
-
   return (
     <Stack p={4}>
       <Heading>Epic - {project?.name}</Heading>
@@ -38,11 +36,7 @@ const ProjectEpicScreen = () => {
       <Button width="160px" colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
         Create Epic
       </Button>
-      <CreateEpicDrawer
-        projectId={project?.id}
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-      />
+      <CreateEpicDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <Stack>
         {epics?.map((epic) => (
@@ -69,7 +63,6 @@ const ProjectEpicScreen = () => {
                 <span>Start:</span>
                 <span>{dayjs(epic.start).format("MM-DD-YYYY")}</span>
               </Stack>
-
               <Stack direction="row">
                 <span>Start:</span>
                 <span>{dayjs(epic.end).format("MM-DD-YYYY")}</span>
@@ -84,7 +77,7 @@ const ProjectEpicScreen = () => {
                       key={t.id}
                       passHref
                     >
-                      <Link>{t.name}</Link>
+                      <Link color="teal">{t.name}</Link>
                     </NextLink>
                   ))}
               </Stack>

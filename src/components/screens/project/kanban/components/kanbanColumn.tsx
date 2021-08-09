@@ -25,7 +25,6 @@ import MarkKeyword from "@components/markKeyword";
 import Modal from "@components/modal";
 import { Drag, Drop, DropChild } from "@components/dragAndDrop";
 import CreateTask from "./createTask";
-import useTask from "@hooks/useTask";
 
 export const ColumnContainer = forwardRef<HTMLDivElement, { children: ReactNode }>(
   ({ children, ...restProps }, ref) => {

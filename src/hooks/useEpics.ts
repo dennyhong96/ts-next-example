@@ -1,13 +1,12 @@
 import { useCallback } from "react";
-import { useQuery } from "react-query";
+import { QueryKey, useQuery } from "react-query";
 
 import { IEpic } from "@localTypes/epic";
 import { CollectionReference, DocumentData, Query } from "@firebase/firestore-types";
 import { db } from "@lib/firebase";
 import useEpicsSearchParams from "./useEpicsSearchParams";
-import useEpicsQueryKey from "./useEpicsQueryKey";
 
-const useEpics = () => {
+const useEpics = (queryKey: QueryKey) => {
   const { projectId } = useEpicsSearchParams();
 
   const listEpics = useCallback(async () => {
@@ -31,7 +30,7 @@ const useEpics = () => {
     return items;
   }, [projectId]);
 
-  return useQuery<IEpic[], Error>(useEpicsQueryKey(), () => listEpics());
+  return useQuery<IEpic[], Error>(queryKey, () => listEpics());
 };
 
 export default useEpics;

@@ -37,7 +37,9 @@ export const useOptimisticEdit = (queryKey: QueryKey) =>
   );
 
 export const useOptimisticCreate = (queryKey: QueryKey) =>
-  useOptimisticOptions(queryKey, (target, old) => (old ? [...old, target] : []));
+  useOptimisticOptions(queryKey, (target, old) => {
+    return old ? [...old, target] : [];
+  });
 
 // TODO: Confirm this works & no infinite loop
 export const useOptimisticAddKanban = (queryKey: QueryKey) => {
@@ -82,7 +84,6 @@ export const useOptimisticAddTask = (queryKey: QueryKey) => {
         (oldKanbans: IKanban[] | undefined) => {
           if (!oldKanbans || !Array.isArray(oldKanbans)) return [];
           return oldKanbans.map((kb) => {
-            console.log({ kb });
             return kb.id === target.kanbanId
               ? { ...kb, taskIdsOrder: [...(kb.taskIdsOrder ?? []), target.newTaskId as string] } // TODO: remove as
               : { ...kb };

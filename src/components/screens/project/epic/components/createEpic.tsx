@@ -31,9 +31,8 @@ const CreateEpicDrawer = (props: {
   returnFocusRef?: RefObject<HTMLElement>;
   isOpen: boolean;
   onClose: () => void;
-  projectId: string | undefined;
 }) => {
-  const { returnFocusRef, isOpen, onClose, projectId } = props;
+  const { returnFocusRef, isOpen, onClose } = props;
 
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const { mutateAsync: addEpic, error } = useAddEpics(useEpicsQueryKey());
@@ -45,9 +44,8 @@ const CreateEpicDrawer = (props: {
 
   const handleAddEpic = async (evt: FormEvent) => {
     evt.preventDefault();
-    if (!projectId) return;
     const newEpicId = generateId({ type: "epics" });
-    await addEpic({ ...form, newEpicId, projectId });
+    await addEpic({ ...form, newEpicId });
     handleClose();
   };
 
@@ -88,7 +86,7 @@ const CreateEpicDrawer = (props: {
           <DrawerBody display="flex" alignItems="center" justifyContent="center">
             <Box as="form" width="100%" maxWidth={600} onSubmit={handleAddEpic}>
               <Stack>
-                <FormControl id="project-modal-name">
+                <FormControl id="epic-name">
                   <FormLabel>Epic Name</FormLabel>
                   <Input
                     type="text"
@@ -98,8 +96,8 @@ const CreateEpicDrawer = (props: {
                   />
                 </FormControl>
 
-                <FormControl id="project-modal-name">
-                  <FormLabel>Epic Name</FormLabel>
+                <FormControl id="epic-date-range">
+                  <FormLabel>Start/End Date</FormLabel>
                   <DateRangePicker ranges={[selectionRange]} onChange={handleDate} />
                 </FormControl>
 
