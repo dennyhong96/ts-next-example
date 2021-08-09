@@ -30,29 +30,37 @@ const ProjectEpicScreen = () => {
   };
 
   console.log({ epics });
-  console.log({ tasks });
 
   return (
-    <Box p={4}>
+    <Stack p={4}>
       <Heading>Epic - {project?.name}</Heading>
 
-      <Button colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
+      <Button width="160px" colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
         Create Epic
       </Button>
-      <CreateEpicDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <CreateEpicDrawer
+        projectId={project?.id}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
 
       <Stack>
         {epics?.map((epic) => (
-          <Box key={epic.id}>
+          <Box key={epic.id} borderBottomWidth="1px" borderBottomColor="gray.100">
             <Flex alignItems="center" justifyContent="space-between">
               <Heading size="md">{epic.name}</Heading>
-              <IconButton aria-label="Delete Epic" icon={<DeleteIcon />} />
+              <IconButton
+                aria-label="Delete Epic"
+                icon={<DeleteIcon />}
+                borderRadius={4}
+                onClick={() => setDeleteModalOpenEpicId(epic.id)}
+              />
               <Modal
                 isOpen={deleteModalOpenEpicId === epic.id}
                 onConfirm={() => handleDelete(epic.id)}
                 onClose={handleDeleteModalClose}
+                title={`Delete epic - ${epic.name}`}
               >
-                <Heading>Delete epic - {epic.name}</Heading>
                 <Text>Are your sure that you want to delete epic - {epic.name}?</Text>
               </Modal>
             </Flex>
@@ -84,7 +92,7 @@ const ProjectEpicScreen = () => {
           </Box>
         ))}
       </Stack>
-    </Box>
+    </Stack>
   );
 };
 

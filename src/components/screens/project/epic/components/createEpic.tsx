@@ -20,7 +20,6 @@ import useAddEpics from "@hooks/useAddEpics";
 import useEpicsQueryKey from "@hooks/useEpicsQueryKey";
 import generateId from "@utils/generateId";
 import { DateRangePicker, OnChangeProps } from "react-date-range";
-import { start } from "repl";
 
 const INITIAL_FORM_STATE = {
   name: "",
@@ -32,8 +31,9 @@ const CreateEpicDrawer = (props: {
   returnFocusRef?: RefObject<HTMLElement>;
   isOpen: boolean;
   onClose: () => void;
+  projectId: string | undefined;
 }) => {
-  const { returnFocusRef, isOpen, onClose } = props;
+  const { returnFocusRef, isOpen, onClose, projectId } = props;
 
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const { mutateAsync: addEpic, error } = useAddEpics(useEpicsQueryKey());
@@ -45,8 +45,9 @@ const CreateEpicDrawer = (props: {
 
   const handleAddEpic = async (evt: FormEvent) => {
     evt.preventDefault();
+    if (!projectId) return;
     const newEpicId = generateId({ type: "epics" });
-    await addEpic({ ...form, newEpicId });
+    await addEpic({ ...form, newEpicId, projectId });
     handleClose();
   };
 
