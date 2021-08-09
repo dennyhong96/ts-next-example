@@ -33,11 +33,6 @@ const ProjectEpicScreen = () => {
     <Stack p={4}>
       <Heading>Epic - {project?.name}</Heading>
 
-      <Button width="160px" colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
-        Create Epic
-      </Button>
-      <CreateEpicDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-
       <Stack>
         {epics?.map((epic) => (
           <Box key={epic.id} borderBottomWidth="1px" borderBottomColor="gray.100">
@@ -58,7 +53,8 @@ const ProjectEpicScreen = () => {
                 <Text>Are your sure that you want to delete epic - {epic.name}?</Text>
               </Modal>
             </Flex>
-            <Stack>
+
+            <Flex direction="column" color="gray.500">
               <Stack direction="row">
                 <span>Start:</span>
                 <span>{dayjs(epic.start).format("MM-DD-YYYY")}</span>
@@ -68,7 +64,7 @@ const ProjectEpicScreen = () => {
                 <span>{dayjs(epic.end).format("MM-DD-YYYY")}</span>
               </Stack>
 
-              <Stack>
+              <Stack mt={2}>
                 {epic.id &&
                   tasks
                     ?.filter((t) => t.epicId === epic.id)
@@ -82,10 +78,15 @@ const ProjectEpicScreen = () => {
                       </NextLink>
                     ))}
               </Stack>
-            </Stack>
+            </Flex>
           </Box>
         ))}
       </Stack>
+
+      <Button width="160px" colorScheme="teal" onClick={() => setIsDrawerOpen(true)}>
+        Create Epic
+      </Button>
+      <CreateEpicDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </Stack>
   );
 };

@@ -22,7 +22,7 @@ import SvgClipboardCheck from "@components/icons/ClipboardCheck";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import { useAuth } from "@contexts/auth";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import useProjects from "@hooks/useProjects";
 import useProjectModal from "@hooks/useProjectModal";
 
@@ -44,8 +44,13 @@ const User = () => {
 const Header = () => {
   const { open } = useProjectModal();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { data: projects } = useProjects();
+  const { data: projects, refetch } = useProjects();
   const pinnedProjects = projects?.filter((p) => p.pin);
+
+  useEffect(() => {
+    if (!isPopoverOpen) return;
+    refetch();
+  }, [isPopoverOpen, refetch]);
 
   return (
     <Flex
