@@ -69,17 +69,18 @@ const ProjectEpicScreen = () => {
               </Stack>
 
               <Stack>
-                {tasks
-                  ?.filter((t) => t.epicId === epic.id)
-                  .map((t) => (
-                    <NextLink
-                      href={`/projects/${project?.id}/kanban?editTaskId=${t.id}`}
-                      key={t.id}
-                      passHref
-                    >
-                      <Link color="teal">{t.name}</Link>
-                    </NextLink>
-                  ))}
+                {epic.id &&
+                  tasks
+                    ?.filter((t) => t.epicId === epic.id)
+                    .map((t) => (
+                      <NextLink
+                        href={`/projects/${project?.id}/kanban?editTaskId=${t.id}`}
+                        key={t.id}
+                        passHref
+                      >
+                        <Link color="teal">{t.name}</Link>
+                      </NextLink>
+                    ))}
               </Stack>
             </Stack>
           </Box>

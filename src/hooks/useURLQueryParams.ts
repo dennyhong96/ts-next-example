@@ -1,20 +1,33 @@
 import { useState, useEffect, useCallback } from "react";
 import queryString, { StringifiableRecord } from "query-string";
 import { cleanObject } from "@utils/cleanObject";
+import { useRouter } from "next/router";
 
 const useURLQueryParams = <K extends string>(keys: K[]) => {
-  const filterQueryParams = () => {
+  const router = useRouter();
+
+  const filterQueryParams = useCallback(() => {
     const queryParamsObj = queryString.parseUrl(window.location.href).query;
     return keys.reduce(
       (acc, key) => ({ ...acc, [key]: queryParamsObj[key] ?? "" }),
       {} as { [key in K]: unknown },
     );
-  };
+  }, [keys]);
 
   const [queryObj, setQueryObj] = useState(
     // Lazy initialization
     filterQueryParams,
   );
+
+  useEffect(() => {
+    const handleRouting = () => {
+      setQueryObj(filterQueryParams());
+    };
+    router.events.on("routeChangeComplete", handleRouting);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouting);
+    };
+  }, [filterQueryParams, router.events]);
 
   useEffect(() => {
     const handleUrlChange = () => {
