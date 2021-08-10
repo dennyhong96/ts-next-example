@@ -3,10 +3,12 @@ export default {
 
   setupFilesAfterEnv: ["./jest.setup.ts"],
 
+  testRegex: "\\.(test|integration|unit|spec|e2e)\\.ts",
+
   moduleNameMapper: {
     // Mock css and svg imports
-    "\\.css$": "<rootDir>/src/__test__/mock.ts",
-    "\\.svg$": "<rootDir>/src/__test__/mock.ts",
+    "\\.css$": "<rootDir>/src/__tests__/mock.ts",
+    "\\.svg$": "<rootDir>/src/__tests__/mock.ts",
     // For import aliasing
     "^@components(.*)$": "<rootDir>/src/components$1",
     "^@context(.*)$": "<rootDir>/src/context$1",
