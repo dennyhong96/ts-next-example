@@ -1,5 +1,5 @@
 import useAsync from "@hooks/useAsync";
-import { renderHook, act } from "../test-utils";
+import { renderHook, act } from "@testing-library/react-hooks";
 
 const DEFAULT_STATE: ReturnType<typeof useAsync> = {
   stat: "idle",
@@ -30,7 +30,7 @@ const SUCCESS_STATE: ReturnType<typeof useAsync> = {
 };
 
 describe("hooks/useAsync", () => {
-  test.only("Should handle async actions", async () => {
+  test("Should handle async actions", async () => {
     let resolve: any, reject;
 
     const promise = new Promise((res, rej) => {
