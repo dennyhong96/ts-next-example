@@ -33,4 +33,10 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(googleAuthProvider);
 export const signOut = () => auth.signOut();
 
+// Local emulator for testing https://stackoverflow.com/a/61800319
+if (process.env.NODE_ENV === "test") {
+  db.useEmulator("localhost", 8080);
+  auth.useEmulator("http://localhost:8090");
+}
+
 export default firebase;

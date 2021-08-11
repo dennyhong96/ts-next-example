@@ -34,3 +34,8 @@ yarn-error.log*
 .vercel
 
 .eslintcache
+
+# Firebase
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
