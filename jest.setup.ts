@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 
+// js-dom in node can't simulate some browser functionalities
 window.matchMedia =
   window.matchMedia ||
   function () {

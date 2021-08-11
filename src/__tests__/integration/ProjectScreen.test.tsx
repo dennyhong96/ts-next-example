@@ -1,4 +1,3 @@
-import React from "react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
@@ -66,6 +65,7 @@ describe("components/screens/ProjectsScreen", () => {
   });
 
   test.skip("Should search for project", async () => {
+    // js-dom in node can't simulate url bar
     render(<ProjectsScreen />, { route: "/projects?name=mockName" });
 
     await waitForLoadingFinish();
